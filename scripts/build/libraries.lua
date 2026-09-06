@@ -1,0 +1,4 @@
+EnvVars = {}
+
+LibraryDirs = {}
+Libraries = {}
