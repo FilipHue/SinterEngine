@@ -113,6 +113,7 @@
     <ClInclude Include="src\sinter\core\memory\memory.h" />
     <ClInclude Include="src\sinter\core\memory\memory_types.h" />
     <ClInclude Include="src\sinter\core\memory\memory_utils.h" />
+    <ClInclude Include="src\sinter\core\patterns\singleton.h" />
     <ClInclude Include="src\sinter\core\platform.h" />
     <ClInclude Include="src\sinter\core\typedefs.h" />
     <ClInclude Include="src\sinter\core\version.h" />

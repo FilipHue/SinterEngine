@@ -52,6 +52,7 @@
     <ClInclude Include="src\sinter\sinter.h">
       <Filter>sinter</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\patterns\singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
