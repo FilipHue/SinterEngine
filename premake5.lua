@@ -34,7 +34,8 @@ project "SinterEngine"
 
     includedirs 
     {
-        "%{prj.name}/src"
+        "%{prj.name}/src",
+        "%{IncludeDirs.SPDLOG}"
     }
 
     filter "system:windows"
@@ -56,7 +57,8 @@ project "SinterEngine"
         runtime "Debug"
         defines
         {
-            "SINTER_DEBUG"
+            "SINTER_DEBUG",
+            "SINTER_ENABLE_ASSERTS"
         }
         symbols "On"
 
@@ -65,7 +67,7 @@ project "SinterEngine"
         defines 
         { 
             "SINTER_RELEASE",
-            "NDEBUG"
+            "SINTER_ENABLE_ASSERTS"
         }
         optimize "On"
 
@@ -82,17 +84,19 @@ project "Playground"
 
     files 
     { 
-        "%{prj.name}/**.h", 
-        "%{prj.name}/**.cpp" 
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp"
     }
 
     includedirs 
     { 
-        "SinterEngine/src"
+        "SinterEngine/src",
+        "SinterEngine/dependencies/SPDLOG/include"
     }
 
     libdirs
     {
+        "%{LibraryDirs.SPDLOG}"
     }
 
     links
@@ -124,12 +128,14 @@ project "Playground"
         runtime "Debug"
         defines
         {
-            "SINTER_DEBUG"
+            "SINTER_DEBUG",
+            "SINTER_ENABLE_ASSERTS"
         }
         symbols "On"
 
         links
         {
+            "%{Libraries.SPDLOGD}"
         }
 
     filter "configurations:Release"
@@ -137,10 +143,11 @@ project "Playground"
         defines 
         { 
             "SINTER_RELEASE",
-            "NDEBUG"
+            "SINTER_ENABLE_ASSERTS"
         }
         optimize "On"
 
         links
         {
+            "%{Libraries.SPDLOGR}"
         }

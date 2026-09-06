@@ -57,8 +57,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -81,8 +81,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -105,11 +105,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\sepch.h" />
+    <ClInclude Include="src\sinter\core\api.h" />
+    <ClInclude Include="src\sinter\core\assert.h" />
+    <ClInclude Include="src\sinter\core\defines.h" />
+    <ClInclude Include="src\sinter\core\logging\logger.h" />
+    <ClInclude Include="src\sinter\core\logging\logger_types.h" />
+    <ClInclude Include="src\sinter\core\memory\memory.h" />
+    <ClInclude Include="src\sinter\core\memory\memory_types.h" />
+    <ClInclude Include="src\sinter\core\memory\memory_utils.h" />
+    <ClInclude Include="src\sinter\core\platform.h" />
+    <ClInclude Include="src\sinter\core\typedefs.h" />
+    <ClInclude Include="src\sinter\core\version.h" />
+    <ClInclude Include="src\sinter\sinter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\sinter\core\logging\logger.cpp" />
+    <ClCompile Include="src\sinter\core\memory\memory.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
