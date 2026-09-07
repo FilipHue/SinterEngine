@@ -53,6 +53,7 @@
       <Filter>sinter</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\core\patterns\singleton.h" />
+    <ClInclude Include="src\sinter\core\memory\allocator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />

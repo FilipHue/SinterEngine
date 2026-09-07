@@ -4,7 +4,7 @@
 #include "logger_types.h"
 
 #include <sinter/core/defines.h>
-#include <sinter/core/memory/memory_utils.h>
+#include <sinter/core/memory/memory_types.h>
 
 namespace sinter::core
 {
@@ -65,5 +65,5 @@ namespace sinter::core
 #define SE_CORE_DEBUG(...)    ::sinter::core::Logger::GetCoreLogger()->debug(__VA_ARGS__)
 #else
 #define SE_CLIENT_DEBUG(...)	NO_OP
-#define SE_CORE_DEBUG(...)
+#define SE_CORE_DEBUG(...)		NO_OP
 #endif
