@@ -10,3 +10,8 @@
 
 #include "core/logging/logger.h"
 #include "core/memory/memory.h"
+#include "core/patterns/singleton.h"
+
+// Engine
+#include "engine/engine.h"
+#include "engine/application/application.h"

@@ -109,11 +109,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="playground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SinterEngine\SinterEngine.vcxproj">
       <Project>{10C1DA95-FC23-6A3A-A5A9-A2F091EB35BD}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="playground.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

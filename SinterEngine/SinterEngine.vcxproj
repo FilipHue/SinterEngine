@@ -117,7 +117,12 @@
     <ClInclude Include="src\sinter\core\patterns\singleton.h" />
     <ClInclude Include="src\sinter\core\platform.h" />
     <ClInclude Include="src\sinter\core\typedefs.h" />
+    <ClInclude Include="src\sinter\core\types\string.h" />
     <ClInclude Include="src\sinter\core\version.h" />
+    <ClInclude Include="src\sinter\engine\application\application.h" />
+    <ClInclude Include="src\sinter\engine\application\application_types.h" />
+    <ClInclude Include="src\sinter\engine\engine.h" />
+    <ClInclude Include="src\sinter\engine\engine_types.h" />
     <ClInclude Include="src\sinter\sinter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +131,8 @@
     </ClCompile>
     <ClCompile Include="src\sinter\core\logging\logger.cpp" />
     <ClCompile Include="src\sinter\core\memory\memory.cpp" />
+    <ClCompile Include="src\sinter\engine\application\application.cpp" />
+    <ClCompile Include="src\sinter\engine\engine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

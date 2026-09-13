@@ -1,13 +1,21 @@
 #include <iostream>
 
-// Sinter Engine
-#include <sinter/sinter.h>
+// Playground
+#include "playground.h"
 
-using namespace sinter;
-using namespace core;
+int main(int argc, char** argv)
+{
+	ApplicationConfiguration appConfig;
 
-int main() {
-	Logger::Init();
+	appConfig.applicationName = "Sinter Engine Playground";
+	appConfig.width = 800;
+	appConfig.height = 600;
 
-	Logger::Shutdown();
+	PlaygroundApplication playgroundApp(appConfig);
+
+	EngineConfiguration engineConfig;
+
+	Engine::GetInstance().Initialize(engineConfig);
+	Engine::GetInstance().Run(&playgroundApp);
+	Engine::GetInstance().Shutdown();
 }

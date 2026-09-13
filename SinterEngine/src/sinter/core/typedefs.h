@@ -1,8 +1,5 @@
 #pragma once
 
-// Internal
-#include <sinter/core/assert.h>
-
 // STL
 #include <cstdint>
 

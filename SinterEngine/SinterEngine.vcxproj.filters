@@ -13,6 +13,18 @@
     <Filter Include="sinter\core\memory">
       <UniqueIdentifier>{9A9AE80E-867E-A964-EFDE-A3B7DBE193E6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sinter\core\patterns">
+      <UniqueIdentifier>{929BFD0C-7E2A-87D6-2749-9BD113B7977C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\core\types">
+      <UniqueIdentifier>{9608C727-021F-C5BD-4B96-50DFB7EB9545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\engine">
+      <UniqueIdentifier>{FFEB118B-6BAC-8DC1-34E7-D63EA066D29D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\engine\application">
+      <UniqueIdentifier>{62C64866-CE88-7CF0-1739-0B7D833A55CE}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sepch.h" />
@@ -31,6 +43,9 @@
     <ClInclude Include="src\sinter\core\logging\logger_types.h">
       <Filter>sinter\core\logging</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\memory\allocator.h">
+      <Filter>sinter\core\memory</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\memory\memory.h">
       <Filter>sinter\core\memory</Filter>
     </ClInclude>
@@ -40,20 +55,36 @@
     <ClInclude Include="src\sinter\core\memory\memory_utils.h">
       <Filter>sinter\core\memory</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\patterns\singleton.h">
+      <Filter>sinter\core\patterns</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\platform.h">
       <Filter>sinter\core</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\core\typedefs.h">
       <Filter>sinter\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\types\string.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\version.h">
       <Filter>sinter\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\application\application.h">
+      <Filter>sinter\engine\application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\application\application_types.h">
+      <Filter>sinter\engine\application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\engine.h">
+      <Filter>sinter\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\engine_types.h">
+      <Filter>sinter\engine</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\sinter.h">
       <Filter>sinter</Filter>
     </ClInclude>
-    <ClInclude Include="src\sinter\core\patterns\singleton.h" />
-    <ClInclude Include="src\sinter\core\memory\allocator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -62,6 +93,12 @@
     </ClCompile>
     <ClCompile Include="src\sinter\core\memory\memory.cpp">
       <Filter>sinter\core\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\engine\application\application.cpp">
+      <Filter>sinter\engine\application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\engine\engine.cpp">
+      <Filter>sinter\engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

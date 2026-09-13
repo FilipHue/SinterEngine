@@ -29,11 +29,15 @@ namespace sinter::core
 		static void SetCoreLoggerLevel(LogLevel p_level) { s_core_logger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
 		static void SetCoreLoggerFlushLevel(LogLevel p_level) { s_core_logger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
 
+		static void SetEngineLoggerLevel(LogLevel p_level) { s_engine_logger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetEngineLoggerFlushLevel(LogLevel p_level) { s_engine_logger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+
 		static SharedPtr<spdlog::logger>& GetFunctionTraceLogger() { return s_function_trace_logger; }
 		static SharedPtr<spdlog::logger>& GetAssertLogger() { return s_assert_logger; }
 
 		static SharedPtr<spdlog::logger>& GetClientLogger() { return s_client_logger; }
 		static SharedPtr<spdlog::logger>& GetCoreLogger() { return s_core_logger; }
+		static SharedPtr<spdlog::logger>& GetEngineLogger() { return s_engine_logger; }
 
 	private:
 		static SharedPtr<spdlog::logger> s_function_trace_logger;
@@ -41,6 +45,7 @@ namespace sinter::core
 
 		static SharedPtr<spdlog::logger> s_client_logger;
 		static SharedPtr<spdlog::logger> s_core_logger;
+		static SharedPtr<spdlog::logger> s_engine_logger;
 	};
 
 } // namespace sinter::core
@@ -60,10 +65,18 @@ namespace sinter::core
 #define SE_CORE_ERROR(...)    ::sinter::core::Logger::GetCoreLogger()->error(__VA_ARGS__)
 #define SE_CORE_CRITICAL(...) ::sinter::core::Logger::GetCoreLogger()->critical(__VA_ARGS__)
 
+#define SE_ENGINE_TRACE(...)    ::sinter::core::Logger::GetEngineLogger()->trace(__VA_ARGS__)
+#define SE_ENGINE_INFO(...)     ::sinter::core::Logger::GetEngineLogger()->info(__VA_ARGS__)
+#define SE_ENGINE_WARN(...)     ::sinter::core::Logger::GetEngineLogger()->warn(__VA_ARGS__)
+#define SE_ENGINE_ERROR(...)    ::sinter::core::Logger::GetEngineLogger()->error(__VA_ARGS__)
+#define SE_ENGINE_CRITICAL(...) ::sinter::core::Logger::GetEngineLogger()->critical(__VA_ARGS__)
+
 #if defined(SINTER_DEBUG)
 #define SE_CLIENT_DEBUG(...)    ::sinter::core::Logger::GetClientLogger()->debug(__VA_ARGS__)
 #define SE_CORE_DEBUG(...)    ::sinter::core::Logger::GetCoreLogger()->debug(__VA_ARGS__)
+#define SE_ENGINE_DEBUG(...)    ::sinter::core::Logger::GetEngineLogger()->debug(__VA_ARGS__)
 #else
 #define SE_CLIENT_DEBUG(...)	NO_OP
 #define SE_CORE_DEBUG(...)		NO_OP
+#define SE_ENGINE_DEBUG(...)	NO_OP
 #endif
