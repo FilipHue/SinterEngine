@@ -84,6 +84,7 @@
     </ClInclude>
     <ClInclude Include="src\sinter\core\types\hashtable.h" />
     <ClInclude Include="src\sinter\core\types\list.h" />
+    <ClInclude Include="src\sinter\core\random\random.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -99,5 +100,6 @@
     <ClCompile Include="src\sinter\engine\engine.cpp">
       <Filter>sinter\engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\sinter\core\random\random.cpp" />
   </ItemGroup>
 </Project>

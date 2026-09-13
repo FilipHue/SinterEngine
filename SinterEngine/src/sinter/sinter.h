@@ -11,6 +11,7 @@
 #include "core/logging/logger.h"
 #include "core/memory/memory.h"
 #include "core/patterns/singleton.h"
+#include "core/random/random.h"
 
 // Engine
 #include "engine/engine.h"

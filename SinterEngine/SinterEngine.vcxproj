@@ -115,6 +115,7 @@
     <ClInclude Include="src\sinter\core\memory\memory_utils.h" />
     <ClInclude Include="src\sinter\core\patterns\singleton.h" />
     <ClInclude Include="src\sinter\core\platform.h" />
+    <ClInclude Include="src\sinter\core\random\random.h" />
     <ClInclude Include="src\sinter\core\typedefs.h" />
     <ClInclude Include="src\sinter\core\types\hashtable.h" />
     <ClInclude Include="src\sinter\core\types\list.h" />
@@ -132,6 +133,7 @@
     </ClCompile>
     <ClCompile Include="src\sinter\core\logging\logger.cpp" />
     <ClCompile Include="src\sinter\core\memory\memory.cpp" />
+    <ClCompile Include="src\sinter\core\random\random.cpp" />
     <ClCompile Include="src\sinter\engine\application\application.cpp" />
     <ClCompile Include="src\sinter\engine\engine.cpp" />
   </ItemGroup>
