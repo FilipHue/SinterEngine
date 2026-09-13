@@ -37,11 +37,17 @@
 
 #define EXIT(x) std::exit(x)
 #define NO_OP (void)0
+#define UNUSED(x) (void)(x)
 
 #define BIND_EVENTCALLBACK(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
+// CONSTRUCTORS AND ASSIGNMENT OPERATORS
+
 #define DEFAULT_CTOR(Class) Class() = default;
 #define DEFAULT_DTOR(Class) ~Class() = default;
+#define  DEFAULT_CTOR_AND_DTOR(Class) \
+	Class() = default; \
+	~Class() = default;
 
 #define DEFAULT_COPY(Class) \
 	Class(const Class&) = default; \
@@ -50,6 +56,10 @@
 #define DEFAULT_MOVE(Class) \
 	Class(Class&&) = default; \
 	Class& operator=(Class&&) = default;
+
+#define DEFAULT_COPY_AND_MOVE(Class) \
+	DEFAULT_COPY(Class) \
+	DEFAULT_MOVE(Class)
 
 #define RULE_OF_FIVE(Class) \
 	DEFAULT_CTOR(Class) \
@@ -70,3 +80,49 @@
 #define NO_MOVE(ClassName) \
 	ClassName(ClassName&&) = delete; \
 	ClassName& operator=(ClassName&&) = delete;
+
+// GETTERS
+
+#define GETTER(Type, Name) \
+	Type Get##Name() const { return Name; }
+
+#define GETTER_REF(Type, Name) \
+	const Type& Get##Name() const { return Name; }
+
+#define GETTER_MUTABLE(Type, Name) \
+	Type& Get##Name() { return Name; }
+
+// SETTERS
+
+#define SETTER(Type, Name) \
+	void Set##Name(Type value) { Name = value; }
+
+#define SETTER_REF(Type, Name) \
+	void Set##Name(const Type& value) { Name = value; }
+
+#define SETTER_MOVE(Type, Name) \
+	void Set##Name(Type&& value) { Name = std::move(value); }
+
+#define SETTER_BOTH(Type, Name) \
+	void Set##Name(const Type& value) { Name = value; } \
+	void Set##Name(Type&& value) { Name = std::move(value); }
+
+// PROPERTIES
+
+#define PROPERTY(Type, Name) \
+	Type Get##Name() const { return Name; } \
+	void Set##Name(Type value) { Name = value; }
+
+#define PROPERTY_REF(Type, Name) \
+	const Type& Get##Name() const { return Name; } \
+	void Set##Name(const Type& value) { Name = value; }
+
+#define PROPERTY_MOVE(Type, Name) \
+	const Type& Get##Name() const { return Name; } \
+	void Set##Name(const Type& value) { Name = value; } \
+	void Set##Name(Type&& value) { Name = std::move(value); }
+
+#define PROPERTY_MUTABLE(Type, Name) \
+	Type& Get##Name() { return Name; } \
+	const Type& Get##Name() const { return Name; } \
+	void Set##Name(const Type& value) { Name = value; }

@@ -3,6 +3,8 @@
 // Internal
 #include "application_types.h"
 
+#include <sinter/core/defines.h>
+
 namespace sinter::engine
 {
 
@@ -18,8 +20,14 @@ namespace sinter::engine
 
 		virtual void OnProcessUpdate() = 0;
 
+		b8 IsRunning() const { return m_state.is_running; }
+
+		GETTER_REF(ApplicationConfiguration, m_configuration);
+		GETTER_REF(ApplicationState, m_state);
+
 	private:
 		ApplicationConfiguration m_configuration;
+		ApplicationState m_state;
 	};
 
 } // namespace sinter::engine

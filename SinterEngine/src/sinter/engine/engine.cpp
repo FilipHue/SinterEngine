@@ -22,6 +22,8 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
+		core::MemorySystem::GetInstance().Init();
+
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
 		SE_FUNCTION_TRACE_EXIT();
@@ -33,8 +35,17 @@ namespace sinter::engine
 
 		SE_ASSERT(p_ptrApplication != nullptr, "Application pointer is null!");
 
-		m_ptrApplication = p_ptrApplication;
-		m_ptrApplication->Init();
+		m_application = p_ptrApplication;
+		m_application->Init();
+
+		while (m_application->IsRunning())
+		{
+			MemorySystem::GetInstance().OnFrameStart();
+
+			m_application->OnProcessUpdate();
+		}
+
+		m_application->Shutdown();
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -44,6 +55,8 @@ namespace sinter::engine
 		SE_FUNCTION_TRACE_ENTER();
 
 		SE_ENGINE_DEBUG("Shutting down {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
+
+		core::MemorySystem::GetInstance().Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");
 

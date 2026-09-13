@@ -43,9 +43,6 @@
     <ClInclude Include="src\sinter\core\logging\logger_types.h">
       <Filter>sinter\core\logging</Filter>
     </ClInclude>
-    <ClInclude Include="src\sinter\core\memory\allocator.h">
-      <Filter>sinter\core\memory</Filter>
-    </ClInclude>
     <ClInclude Include="src\sinter\core\memory\memory.h">
       <Filter>sinter\core\memory</Filter>
     </ClInclude>
@@ -85,6 +82,8 @@
     <ClInclude Include="src\sinter\sinter.h">
       <Filter>sinter</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\types\hashtable.h" />
+    <ClInclude Include="src\sinter\core\types\list.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />

@@ -3,10 +3,10 @@
 // Internal
 #include "engine_types.h"
 
-#include <sinter/core/defines.h>
-#include <sinter/core/patterns/singleton.h>
+#include <sinter/core/memory/memory.h>
 
 #include <sinter/engine/application/application.h>
+
 
 namespace sinter::engine
 {
@@ -26,7 +26,7 @@ namespace sinter::engine
 
 	private:
 		EngineConfiguration m_configuration;
-		Application* m_ptrApplication = nullptr;
+		Application* m_application = nullptr;
 	};
 
 } // namespace sinter::engine

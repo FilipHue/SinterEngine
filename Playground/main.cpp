@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 {
 	ApplicationConfiguration appConfig;
 
-	appConfig.applicationName = "Sinter Engine Playground";
+	appConfig.title = "Sinter Engine Playground";
 	appConfig.width = 800;
 	appConfig.height = 600;
 
