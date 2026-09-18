@@ -87,6 +87,7 @@
     <ClInclude Include="src\sinter\core\random\random.h" />
     <ClInclude Include="src\sinter\core\types\array.h" />
     <ClInclude Include="src\sinter\core\types\vector.h" />
+    <ClInclude Include="src\sinter\core\types\uuid.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
