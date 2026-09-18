@@ -25,14 +25,4 @@ namespace sinter::core
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-	void MemorySystem::OnFrameStart()
-	{
-		NO_OP;
-	}
-
-	void MemorySystem::OnFrameEnd()
-	{
-		NO_OP;
-	}
-
 } // namespace sinter::core

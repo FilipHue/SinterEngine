@@ -13,6 +13,12 @@
 #include "core/patterns/singleton.h"
 #include "core/random/random.h"
 
+#include "core/types/array.h"
+#include "core/types/vector.h"
+#include "core/types/hashtable.h"
+#include "core/types/list.h"
+#include "core/types/string.h"
+
 // Engine
 #include "engine/engine.h"
 #include "engine/application/application.h"

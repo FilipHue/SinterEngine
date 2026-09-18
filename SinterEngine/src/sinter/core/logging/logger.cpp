@@ -10,72 +10,73 @@ namespace sinter::core
 	constexpr const char* CORE_LOGGER_NAME = "SINTER-CORE";
 	constexpr const char* ENGINE_LOGGER_NAME = "SINTER-ENGINE";
 
+	constexpr i32 MAX_ASSERT_MESSAGE_LENGTH = 1024;
 
-	SharedPtr<spdlog::logger> Logger::s_function_trace_logger;
-	SharedPtr<spdlog::logger> Logger::s_assert_logger;
-	SharedPtr<spdlog::logger> Logger::s_client_logger;
-	SharedPtr<spdlog::logger> Logger::s_core_logger;
-	SharedPtr<spdlog::logger> Logger::s_engine_logger;
+	SharedPtr<spdlog::logger> Logger::s_functionTraceLogger;
+	SharedPtr<spdlog::logger> Logger::s_assertLogger;
+	SharedPtr<spdlog::logger> Logger::s_clientLogger;
+	SharedPtr<spdlog::logger> Logger::s_coreLogger;
+	SharedPtr<spdlog::logger> Logger::s_engineLogger;
 
 	void Logger::Init()
 	{
 		std::vector<spdlog::sink_ptr> l_sinks;
-		l_sinks.emplace_back(MakeShared<spdlog::sinks::stdout_color_sink_mt>());
+		l_sinks.emplace_back(MakeSharedPtr<spdlog::sinks::stdout_color_sink_mt>());
 
 		l_sinks[0]->set_pattern("%^[%T] %n: %v%$");
 
-		s_function_trace_logger = MakeShared<spdlog::logger>(FUNCTION_TRACE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
-		s_function_trace_logger->set_level(spdlog::level::trace);
-		s_function_trace_logger->flush_on(spdlog::level::trace);
-		spdlog::register_logger(s_function_trace_logger);
+		s_functionTraceLogger = MakeSharedPtr<spdlog::logger>(FUNCTION_TRACE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_functionTraceLogger->set_level(spdlog::level::trace);
+		s_functionTraceLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_functionTraceLogger);
 
-		s_assert_logger = MakeShared<spdlog::logger>(ASSERT_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
-		s_assert_logger->set_level(spdlog::level::trace);
-		s_assert_logger->flush_on(spdlog::level::trace);
-		spdlog::register_logger(s_assert_logger);
+		s_assertLogger = MakeSharedPtr<spdlog::logger>(ASSERT_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_assertLogger->set_level(spdlog::level::trace);
+		s_assertLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_assertLogger);
 
-		s_client_logger = MakeShared<spdlog::logger>(CLIENT_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
-		s_client_logger->set_level(spdlog::level::trace);
-		s_client_logger->flush_on(spdlog::level::trace);
-		spdlog::register_logger(s_client_logger);
+		s_clientLogger = MakeSharedPtr<spdlog::logger>(CLIENT_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_clientLogger->set_level(spdlog::level::trace);
+		s_clientLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_clientLogger);
 
-		s_core_logger = MakeShared<spdlog::logger>(CORE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
-		s_core_logger->set_level(spdlog::level::trace);
-		s_core_logger->flush_on(spdlog::level::trace);
-		spdlog::register_logger(s_core_logger);
+		s_coreLogger = MakeSharedPtr<spdlog::logger>(CORE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_coreLogger->set_level(spdlog::level::trace);
+		s_coreLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_coreLogger);
 
-		s_engine_logger = MakeShared<spdlog::logger>(ENGINE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
-		s_engine_logger->set_level(spdlog::level::trace);
-		s_engine_logger->flush_on(spdlog::level::trace);
-		spdlog::register_logger(s_engine_logger);
+		s_engineLogger = MakeSharedPtr<spdlog::logger>(ENGINE_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_engineLogger->set_level(spdlog::level::trace);
+		s_engineLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_engineLogger);
 	}
 
 	void Logger::Shutdown()
 	{
-		s_function_trace_logger.reset();
-		s_assert_logger.reset();
+		s_functionTraceLogger.reset();
+		s_assertLogger.reset();
 
-		s_client_logger.reset();
-		s_core_logger.reset();
-		s_engine_logger.reset();
+		s_clientLogger.reset();
+		s_coreLogger.reset();
+		s_engineLogger.reset();
 
 		spdlog::shutdown();	
 	}
 
 	void Logger::LogAssert(const char* p_condition, const char* p_message, const char* p_file, int p_line)
 	{
-		s_assert_logger->error("Assertion failed: ({}) in file {} at line {}. Message: {}", p_condition, p_file, p_line, p_message);
+		s_assertLogger->error("Assertion failed: ({}) in file {} at line {}. Message: {}", p_condition, p_file, p_line, p_message);
 	}
 
 	void Logger::LogAssertVarArgs(const char* p_condition, const char* p_file, int p_line, const char* p_format, ...)
 	{
-		va_list args;
-		va_start(args, p_format);
-		char buffer[1024];
-		vsnprintf(buffer, sizeof(buffer), p_format, args);
-		va_end(args);
+		va_list l_args;
+		va_start(l_args, p_format);
+		char l_buffer[MAX_ASSERT_MESSAGE_LENGTH];
+		vsnprintf(l_buffer, sizeof(l_buffer), p_format, l_args);
+		va_end(l_args);
 
-		s_assert_logger->error("Assertion failed: ({}) in file {} at line {}. Message: {}", p_condition, p_file, p_line, buffer);
+		s_assertLogger->error("Assertion failed: ({}) in file {} at line {}. Message: {}", p_condition, p_file, p_line, l_buffer);
 	}
 
 } // namespace sinter::core

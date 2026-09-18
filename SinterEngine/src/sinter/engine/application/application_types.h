@@ -16,7 +16,7 @@ namespace sinter::engine
 
 	struct ApplicationState
 	{
-		b8 is_running;
+		b8 isRunning;
 	};
 
 } // namespace sinter::engine

@@ -1,3 +1,4 @@
+// random.cpp
 #include "sepch.h"
 #include "random.h"
 
@@ -9,10 +10,18 @@ namespace sinter::core
 		struct ThreadLocalState
 		{
 			std::mt19937_64 engine;
+
+			// Floating point distributions
 			std::uniform_real_distribution<f32> float_dist{ 0.0f, 1.0f };
 			std::uniform_real_distribution<f64> float64_dist{ 0.0, 1.0 };
 			std::normal_distribution<f32> normal_dist{ 0.0f, 1.0f };
 			std::normal_distribution<f64> normal64_dist{ 0.0, 1.0 };
+
+			// Integer distributions (full range)
+			std::uniform_int_distribution<i32> int32_dist;
+			std::uniform_int_distribution<i64> int64_dist;
+			std::uniform_int_distribution<u32> uint32_dist;
+			std::uniform_int_distribution<u64> uint64_dist;
 		};
 
 		static ThreadLocalState& GetState()
@@ -23,8 +32,6 @@ namespace sinter::core
 			return state;
 		}
 	}
-
-	using State = ThreadLocalState;
 
 	// ============================================================================
 	// FLOATING POINT
@@ -43,58 +50,37 @@ namespace sinter::core
 	f32 Random::GetFloatInRange(f32 p_min, f32 p_max)
 	{
 		if (p_min == p_max)
-		{
 			return p_min;
-		}
-
 		return std::uniform_real_distribution<f32>(p_min, p_max)(GetState().engine);
 	}
 
 	f64 Random::GetFloat64InRange(f64 p_min, f64 p_max)
 	{
 		if (p_min == p_max)
-		{
 			return p_min;
-		}
-
 		return std::uniform_real_distribution<f64>(p_min, p_max)(GetState().engine);
 	}
 
 	// ============================================================================
-	// INTEGER
+	// SIGNED INTEGERS
 	// ============================================================================
 
-	i32 Random::GetInt()
+	i32 Random::GetInt32()
 	{
-		// Default range: [0, 100] for practical use
-		return GetIntInRange(0, 100);
+		return GetState().int32_dist(GetState().engine);
 	}
 
 	i64 Random::GetInt64()
 	{
-		// Default range: [0, 100] for practical use
-		return GetInt64InRange(0, 100);
+		return GetState().int64_dist(GetState().engine);
 	}
 
-	u32 Random::GetUInt()
-	{
-		// Default range: [0, 100] for practical use
-		return GetUIntInRange(0, 100);
-	}
-
-	u64 Random::GetUInt64()
-	{
-		// Default range: [0, 100] for practical use
-		return GetUInt64InRange(0, 100);
-	}
-
-	i32 Random::GetIntInRange(i32 p_min, i32 p_max)
+	i32 Random::GetInt32InRange(i32 p_min, i32 p_max)
 	{
 		if (p_min == p_max)
 		{
 			return p_min;
 		}
-
 		return std::uniform_int_distribution<i32>(p_min, p_max)(GetState().engine);
 	}
 
@@ -104,17 +90,25 @@ namespace sinter::core
 		{
 			return p_min;
 		}
-
 		return std::uniform_int_distribution<i64>(p_min, p_max)(GetState().engine);
 	}
 
-	u32 Random::GetUIntInRange(u32 p_min, u32 p_max)
-	{
-		if (p_min == p_max)
-		{
-			return p_min;
-		}
+	// ============================================================================
+	// UNSIGNED INTEGERS
+	// ============================================================================
 
+	u32 Random::GetUInt32()
+	{
+		return GetState().uint32_dist(GetState().engine);
+	}
+
+	u64 Random::GetUInt64()
+	{
+		return GetState().uint64_dist(GetState().engine);
+	}
+
+	u32 Random::GetUInt32InRange(u32 p_min, u32 p_max)
+	{
 		return std::uniform_int_distribution<u32>(p_min, p_max)(GetState().engine);
 	}
 
@@ -124,7 +118,6 @@ namespace sinter::core
 		{
 			return p_min;
 		}
-
 		return std::uniform_int_distribution<u64>(p_min, p_max)(GetState().engine);
 	}
 
@@ -137,7 +130,7 @@ namespace sinter::core
 		return GetFloat() < p_probability;
 	}
 
-	f32 Random::GetNormal(f32 p_mean, f32 p_stddev)
+	f32 Random::GetNormal32(f32 p_mean, f32 p_stddev)
 	{
 		return p_mean + p_stddev * GetState().normal_dist(GetState().engine);
 	}

@@ -9,9 +9,11 @@ namespace sinter::engine
 {
 
 	class Engine;
+
 	class Application
 	{
 	public:
+		NO_DEFAULT_CTOR(Application);
 		Application(const ApplicationConfiguration& p_refConfiguration);
 		virtual ~Application() = default;
 
@@ -20,7 +22,7 @@ namespace sinter::engine
 
 		virtual void OnProcessUpdate() = 0;
 
-		b8 IsRunning() const { return m_state.is_running; }
+		b8 IsRunning() const { return m_state.isRunning; }
 
 		GETTER_REF(ApplicationConfiguration, m_configuration);
 		GETTER_REF(ApplicationState, m_state);

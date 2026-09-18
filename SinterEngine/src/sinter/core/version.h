@@ -20,6 +20,6 @@ namespace sinter
 
 	#define SINTER_VERSION_NUMBER SINTER_MAKE_VERSION(SINTER_VERSION_MAJOR, SINTER_VERSION_MINOR, SINTER_VERSION_PATCH)
 
-	#define SINTER_VERSION_NAME "SinterEngine"
+	#define SINTER_VERSION_NAME "SinterEngine [COBBLE]"
 
 } // namespace sinter

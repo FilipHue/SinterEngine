@@ -11,18 +11,19 @@ namespace sinter::engine
 
 	using namespace core;
 
-	void Engine::Initialize(const EngineConfiguration& p_refConfiguration)
+	void Engine::Initialize(EngineConfiguration p_configuration)
 	{
 		Logger::Init();
 		Logger::EnableFunctionTraces(false);
 
 		SE_FUNCTION_TRACE_ENTER();
 
-		m_configuration = p_refConfiguration;
+		m_configuration = std::move(p_configuration);
 
 		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
-		core::MemorySystem::GetInstance().Init();
+		m_memorySystem = &MemorySystem::GetInstance();
+		m_memorySystem->Init();
 
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
@@ -40,8 +41,6 @@ namespace sinter::engine
 
 		while (m_application->IsRunning())
 		{
-			MemorySystem::GetInstance().OnFrameStart();
-
 			m_application->OnProcessUpdate();
 		}
 
@@ -56,7 +55,7 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Shutting down {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
-		core::MemorySystem::GetInstance().Shutdown();
+		m_memorySystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");
 

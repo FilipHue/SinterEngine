@@ -82,6 +82,7 @@
 #error "Unknown compiler! SinterEngine only supports MSVC, Clang, and GCC."
 #endif
 
+
 /************************************************/
 /*              Standard Detection              */
 /************************************************/

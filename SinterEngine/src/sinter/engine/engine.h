@@ -11,12 +11,14 @@
 namespace sinter::engine
 {
 
+	using namespace core;
+
 	class Engine final : public core::Singleton<Engine>
 	{
 		friend class core::Singleton<Engine>;
 
 	public:
-		void Initialize(const EngineConfiguration& p_refConfiguration);
+		void Initialize(EngineConfiguration p_configuration);
 		void Run(Application* p_ptrApplication);
 		void Shutdown();
 
@@ -27,6 +29,8 @@ namespace sinter::engine
 	private:
 		EngineConfiguration m_configuration;
 		Application* m_application = nullptr;
+
+		MemorySystem* m_memorySystem = nullptr;
 	};
 
 } // namespace sinter::engine

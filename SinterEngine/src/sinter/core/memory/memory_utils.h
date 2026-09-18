@@ -7,70 +7,62 @@ namespace sinter::core
 {
 
 	template <typename T>
-	FORCE_INLINE void AlignAddress(T*& address, size_t alignment)
+	FORCE_INLINE size_t AlignSize(size_t p_size, size_t p_alignment)
 	{
-		uintptr_t addr = REINTERPRET_CAST(uintptr_t, address);
-		uintptr_t alignedAddr = (addr + alignment - 1) & ~(alignment - 1);
-		address = REINTERPRET_CAST(T*, alignedAddr);
+		return (p_size + p_alignment - 1) & ~(p_alignment - 1);
 	}
 
 	template <typename T>
-	FORCE_INLINE size_t AlignSize(size_t size, size_t alignment)
+	T* SafeMalloc(size_t p_size)
 	{
-		return (size + alignment - 1) & ~(alignment - 1);
+		T* l_ptr = STATIC_CAST(T*, malloc(p_size));
+		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
+		return l_ptr;
 	}
 
 	template <typename T>
-	T* SafeMalloc(size_t size)
+	T* SafeCalloc(size_t p_num, size_t p_size)
 	{
-		T* ptr = static_cast<T*>(malloc(size));
-		SE_ASSERT(ptr != nullptr, "Memory allocation failed.");
-		return ptr;
+		T* l_ptr = STATIC_CAST(T*, calloc(p_num, p_size));
+		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
+		return l_ptr;
 	}
 
 	template <typename T>
-	T* SafeCalloc(size_t num, size_t size)
+	T* SafeRealloc(T* p_ptrType, size_t p_newSize)
 	{
-		T* ptr = static_cast<T*>(calloc(num, size));
-		SE_ASSERT(ptr != nullptr, "Memory allocation failed.");
-		return ptr;
+		T* l_ptr = STATIC_CAST(T*, realloc(p_ptrType, p_newSize));
+		SE_ASSERT(l_ptr != nullptr, "Memory reallocation failed.");
+		return l_ptr;
 	}
 
 	template <typename T>
-	T* SafeRealloc(T* ptr, size_t newSize)
+	void SafeDelete(T*& p_ptrType)
 	{
-		ptr = static_cast<T*>(realloc(ptr, newSize));
-		SE_ASSERT(ptr != nullptr, "Memory reallocation failed.");
-		return ptr;
-	}
-
-	template <typename T>
-	void SafeDelete(T*& ptr)
-	{
-		if (ptr)
+		if (p_ptrType)
 		{
-			delete ptr;
-			ptr = nullptr;
+			delete p_ptrType;
+			p_ptrType = nullptr;
 		}
 	}
 
 	template <typename T>
-	void SafeDeleteArray(T*& ptr)
+	void SafeDeleteArray(T*& p_ptrType)
 	{
-		if (ptr)
+		if (p_ptrType)
 		{
-			delete[] ptr;
-			ptr = nullptr;
+			delete[] p_ptrType;
+			p_ptrType = nullptr;
 		}
 	}
 
 	template <typename T>
-	void SafeFree(T*& ptr)
+	void SafeFree(T*& p_ptrType)
 	{
-		if (ptr)
+		if (p_ptrType)
 		{
-			free(ptr);
-			ptr = nullptr;
+			free(p_ptrType);
+			p_ptrType = nullptr;
 		}
 	}
 

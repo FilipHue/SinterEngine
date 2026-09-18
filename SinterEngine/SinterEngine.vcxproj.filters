@@ -85,6 +85,8 @@
     <ClInclude Include="src\sinter\core\types\hashtable.h" />
     <ClInclude Include="src\sinter\core\types\list.h" />
     <ClInclude Include="src\sinter\core\random\random.h" />
+    <ClInclude Include="src\sinter\core\types\array.h" />
+    <ClInclude Include="src\sinter\core\types\vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />

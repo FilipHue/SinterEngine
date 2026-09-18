@@ -9,7 +9,7 @@ namespace sinter::engine
 
 	Application::Application(const ApplicationConfiguration& p_refConfiguration) : m_configuration(p_refConfiguration)
 	{
-		m_state.is_running = false;
+		m_state.isRunning = false;
 	}
 
 } // namespace sinter::engine
