@@ -88,6 +88,7 @@
     <ClInclude Include="src\sinter\core\types\array.h" />
     <ClInclude Include="src\sinter\core\types\vector.h" />
     <ClInclude Include="src\sinter\core\types\uuid.h" />
+    <ClInclude Include="src\sinter\core\time\timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -104,5 +105,6 @@
       <Filter>sinter\engine</Filter>
     </ClCompile>
     <ClCompile Include="src\sinter\core\random\random.cpp" />
+    <ClCompile Include="src\sinter\core\time\timer.cpp" />
   </ItemGroup>
 </Project>
