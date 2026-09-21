@@ -6,6 +6,7 @@
 #include <sinter/core/memory/memory.h>
 
 #include <sinter/engine/application/application.h>
+#include <sinter/engine/window/window.h>
 
 
 namespace sinter::engine
@@ -31,6 +32,7 @@ namespace sinter::engine
 		Application* m_application = nullptr;
 
 		MemorySystem* m_memorySystem = nullptr;
+		WindowSystem* m_windowSystem = nullptr;	
 	};
 
 } // namespace sinter::engine

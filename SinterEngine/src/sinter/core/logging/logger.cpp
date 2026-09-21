@@ -6,17 +6,21 @@ namespace sinter::core
 
 	constexpr const char* FUNCTION_TRACE_LOGGER_NAME = "SINTER-FUNCTION-TRACE";
 	constexpr const char* ASSERT_LOGGER_NAME = "SINTER-ASSERT";
+
 	constexpr const char* CLIENT_LOGGER_NAME = "SINTER-CLIENT";
 	constexpr const char* CORE_LOGGER_NAME = "SINTER-CORE";
 	constexpr const char* ENGINE_LOGGER_NAME = "SINTER-ENGINE";
+	constexpr const char* PLATFORM_LOGGER_NAME = "SINTER-PLATFORM";
 
 	constexpr i32 MAX_ASSERT_MESSAGE_LENGTH = 1024;
 
 	SharedPtr<spdlog::logger> Logger::s_functionTraceLogger;
 	SharedPtr<spdlog::logger> Logger::s_assertLogger;
+
 	SharedPtr<spdlog::logger> Logger::s_clientLogger;
 	SharedPtr<spdlog::logger> Logger::s_coreLogger;
 	SharedPtr<spdlog::logger> Logger::s_engineLogger;
+	SharedPtr<spdlog::logger> Logger::s_platformLogger;
 
 	void Logger::Init()
 	{
@@ -49,6 +53,11 @@ namespace sinter::core
 		s_engineLogger->set_level(spdlog::level::trace);
 		s_engineLogger->flush_on(spdlog::level::trace);
 		spdlog::register_logger(s_engineLogger);
+
+		s_platformLogger = MakeSharedPtr<spdlog::logger>(PLATFORM_LOGGER_NAME, l_sinks.begin(), l_sinks.end());
+		s_platformLogger->set_level(spdlog::level::trace);
+		s_platformLogger->flush_on(spdlog::level::trace);
+		spdlog::register_logger(s_platformLogger);
 	}
 
 	void Logger::Shutdown()
@@ -59,6 +68,7 @@ namespace sinter::core
 		s_clientLogger.reset();
 		s_coreLogger.reset();
 		s_engineLogger.reset();
+		s_platformLogger.reset();
 
 		spdlog::shutdown();	
 	}

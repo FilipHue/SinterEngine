@@ -17,7 +17,7 @@ project "SinterEngine"
     kind "StaticLib"
     language "C++"
 
-    -- Link the runtime library dynamically (DLL) instead of statically into the executable.
+    -- Link the runtime library dynamically (DLL) instead of statically linking it into the executable.
     staticruntime "Off"
 
     targetdir ("%{wks.location}/bin/" .. OutputDir .. "/%{prj.name}")
@@ -35,6 +35,7 @@ project "SinterEngine"
     includedirs 
     {
         "%{prj.name}/src",
+        "%{IncludeDirs.GLFW}",
         "%{IncludeDirs.SPDLOG}"
     }
 
@@ -91,11 +92,13 @@ project "Playground"
     includedirs 
     { 
         "SinterEngine/src",
+        "SinterEngine/dependencies/GLFW/include",
         "SinterEngine/dependencies/SPDLOG/include"
     }
 
     libdirs
     {
+        "%{LibraryDirs.GLFW}",
         "%{LibraryDirs.SPDLOG}"
     }
 
@@ -135,6 +138,7 @@ project "Playground"
 
         links
         {
+            "%{Libraries.GLFWD}",
             "%{Libraries.SPDLOGD}"
         }
 
@@ -149,5 +153,6 @@ project "Playground"
 
         links
         {
+            "%{Libraries.GLFWR}",
             "%{Libraries.SPDLOGR}"
         }

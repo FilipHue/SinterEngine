@@ -3,7 +3,7 @@
 // STL
 #include <list>
 
-namespace sinter::core
+namespace sinter
 {
 	
 	template<typename T>

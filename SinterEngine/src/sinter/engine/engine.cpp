@@ -25,6 +25,9 @@ namespace sinter::engine
 		m_memorySystem = &MemorySystem::GetInstance();
 		m_memorySystem->Init();
 
+		m_windowSystem = &WindowSystem::GetInstance();
+		m_windowSystem->Init();
+
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
 		SE_FUNCTION_TRACE_EXIT();
@@ -34,17 +37,23 @@ namespace sinter::engine
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		SE_ASSERT(p_ptrApplication != nullptr, "Application pointer is null!");
+		if (p_ptrApplication == nullptr)
+		{
+			SE_ENGINE_ERROR("Application pointer is null. Please provide a valid application instance.");
+			return;
+		}
 
 		m_application = p_ptrApplication;
-		m_application->Init();
+		m_application->Setup();
 
 		while (m_application->IsRunning())
 		{
 			m_application->OnProcessUpdate();
+
+			m_windowSystem->PollEvents();
 		}
 
-		m_application->Shutdown();
+		m_application->Teardown();
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -55,6 +64,7 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Shutting down {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
+		m_windowSystem->Shutdown();
 		m_memorySystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");

@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;dependencies\GLFW\include;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -82,7 +82,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;dependencies\GLFW\include;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -129,6 +129,9 @@
     <ClInclude Include="src\sinter\engine\application\application_types.h" />
     <ClInclude Include="src\sinter\engine\engine.h" />
     <ClInclude Include="src\sinter\engine\engine_types.h" />
+    <ClInclude Include="src\sinter\engine\window\window.h" />
+    <ClInclude Include="src\sinter\engine\window\window_types.h" />
+    <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
     <ClInclude Include="src\sinter\sinter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +144,8 @@
     <ClCompile Include="src\sinter\core\time\timer.cpp" />
     <ClCompile Include="src\sinter\engine\application\application.cpp" />
     <ClCompile Include="src\sinter\engine\engine.cpp" />
+    <ClCompile Include="src\sinter\engine\window\window.cpp" />
+    <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

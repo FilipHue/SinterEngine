@@ -5,6 +5,8 @@
 
 #include <sinter/core/defines.h>
 
+#include <sinter/engine/window/window.h>
+
 namespace sinter::engine
 {
 
@@ -12,6 +14,8 @@ namespace sinter::engine
 
 	class Application
 	{
+		friend class Engine;
+
 	public:
 		NO_DEFAULT_CTOR(Application);
 		Application(const ApplicationConfiguration& p_refConfiguration);
@@ -24,12 +28,18 @@ namespace sinter::engine
 
 		b8 IsRunning() const { return m_state.isRunning; }
 
-		GETTER_REF(ApplicationConfiguration, m_configuration);
-		GETTER_REF(ApplicationState, m_state);
+		const ApplicationConfiguration& GetConfiguration() const { return m_configuration; }
+		const ApplicationState& GetState() const { return m_state; }
+
+	private:
+		void Setup();
+		void Teardown();
 
 	private:
 		ApplicationConfiguration m_configuration;
 		ApplicationState m_state;
+
+		Window* m_mainWindow{ nullptr };
 	};
 
 } // namespace sinter::engine

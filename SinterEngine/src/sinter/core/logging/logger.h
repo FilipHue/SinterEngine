@@ -32,12 +32,20 @@ namespace sinter::core
 		static void SetEngineLoggerLevel(LogLevel p_level) { s_engineLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
 		static void SetEngineLoggerFlushLevel(LogLevel p_level) { s_engineLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
 
+		static void SetPlatformLoggerLevel(LogLevel p_level) { s_platformLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetPlatformLoggerFlushLevel(LogLevel p_level) { s_platformLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+
 		static SharedPtr<spdlog::logger>& GetFunctionTraceLogger() { return s_functionTraceLogger; }
 		static SharedPtr<spdlog::logger>& GetAssertLogger() { return s_assertLogger; }
 
 		static SharedPtr<spdlog::logger>& GetClientLogger() { return s_clientLogger; }
 		static SharedPtr<spdlog::logger>& GetCoreLogger() { return s_coreLogger; }
 		static SharedPtr<spdlog::logger>& GetEngineLogger() { return s_engineLogger; }
+		static SharedPtr<spdlog::logger>& GetPlatformLogger() { return s_platformLogger; }
+
+	private:
+		NO_DEFAULT_CTOR(Logger);
+		NO_DEFAULT_DTOR(Logger);
 
 	private:
 		static SharedPtr<spdlog::logger> s_functionTraceLogger;
@@ -46,6 +54,7 @@ namespace sinter::core
 		static SharedPtr<spdlog::logger> s_clientLogger;
 		static SharedPtr<spdlog::logger> s_coreLogger;
 		static SharedPtr<spdlog::logger> s_engineLogger;
+		static SharedPtr<spdlog::logger> s_platformLogger;
 	};
 
 } // namespace sinter::core
@@ -71,12 +80,20 @@ namespace sinter::core
 #define SE_ENGINE_ERROR(...)    ::sinter::core::Logger::GetEngineLogger()->error(__VA_ARGS__)
 #define SE_ENGINE_CRITICAL(...) ::sinter::core::Logger::GetEngineLogger()->critical(__VA_ARGS__)
 
+#define SE_PLATFORM_TRACE(...)    ::sinter::core::Logger::GetPlatformLogger()->trace(__VA_ARGS__)
+#define SE_PLATFORM_INFO(...)     ::sinter::core::Logger::GetPlatformLogger()->info(__VA_ARGS__)
+#define SE_PLATFORM_WARN(...)     ::sinter::core::Logger::GetPlatformLogger()->warn(__VA_ARGS__)
+#define SE_PLATFORM_ERROR(...)    ::sinter::core::Logger::GetPlatformLogger()->error(__VA_ARGS__)
+#define SE_PLATFORM_CRITICAL(...) ::sinter::core::Logger::GetPlatformLogger()->critical(__VA_ARGS__)
+
 #if defined(SINTER_DEBUG)
 #define SE_CLIENT_DEBUG(...)    ::sinter::core::Logger::GetClientLogger()->debug(__VA_ARGS__)
 #define SE_CORE_DEBUG(...)		::sinter::core::Logger::GetCoreLogger()->debug(__VA_ARGS__)
 #define SE_ENGINE_DEBUG(...)    ::sinter::core::Logger::GetEngineLogger()->debug(__VA_ARGS__)
+#define SE_PLATFORM_DEBUG(...)    ::sinter::core::Logger::GetPlatformLogger()->debug(__VA_ARGS__)
 #else
 #define SE_CLIENT_DEBUG(...)	NO_OP
 #define SE_CORE_DEBUG(...)		NO_OP
 #define SE_ENGINE_DEBUG(...)	NO_OP
+#define SE_PLATFORM_DEBUG(...)	NO_OP
 #endif

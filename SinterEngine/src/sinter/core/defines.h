@@ -31,6 +31,8 @@
 	INLINE EnumType operator&(EnumType a, EnumType b) { return STATIC_CAST(EnumType, STATIC_CAST(u32, a) & STATIC_CAST(u32, b)); } \
 	INLINE EnumType operator~(EnumType a) { return STATIC_CAST(EnumType, ~STATIC_CAST(u32, a)); }
 
+#define HAS_FLAG(value, flag) ((value & flag) == flag)
+
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define CLAMP(x, lower, higher) (MAX((lower), MIN((x), (higher))))

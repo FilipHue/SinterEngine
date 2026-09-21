@@ -50,6 +50,10 @@ namespace sinter::core
 
 		static void SetSeed(u64 p_seed);
 		static void ResetSeed();
+
+	private:
+		NO_DEFAULT_CTOR(Random);
+		NO_DEFAULT_DTOR(Random);
 	};
 
 } // namespace sinter::core

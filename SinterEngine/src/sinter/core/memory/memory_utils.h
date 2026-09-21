@@ -3,13 +3,29 @@
 // Internal
 #include <sinter/core/assert.h>
 
-namespace sinter::core
+namespace sinter
 {
 
 	template <typename T>
 	FORCE_INLINE size_t AlignSize(size_t p_size, size_t p_alignment)
 	{
 		return (p_size + p_alignment - 1) & ~(p_alignment - 1);
+	}
+
+	template <typename T>
+	T* SafeNew()
+	{
+		T* l_ptr = new T();
+		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
+		return l_ptr;
+	}
+
+	template <typename T, typename... Args>
+	T* SafeNew(Args&&... args)
+	{
+		T* l_ptr = new T(std::forward<Args>(args)...);
+		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
+		return l_ptr;
 	}
 
 	template <typename T>
@@ -66,4 +82,4 @@ namespace sinter::core
 		}
 	}
 
-} // namespace sinter::core
+} // namespace sinter

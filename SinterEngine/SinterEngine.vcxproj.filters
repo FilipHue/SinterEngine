@@ -16,6 +16,12 @@
     <Filter Include="sinter\core\patterns">
       <UniqueIdentifier>{929BFD0C-7E2A-87D6-2749-9BD113B7977C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sinter\core\random">
+      <UniqueIdentifier>{E2604A1A-CE44-0B70-37A5-05C323A8F5F1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\core\time">
+      <UniqueIdentifier>{50CB24C3-3CC4-4315-65F6-289A514E2321}</UniqueIdentifier>
+    </Filter>
     <Filter Include="sinter\core\types">
       <UniqueIdentifier>{9608C727-021F-C5BD-4B96-50DFB7EB9545}</UniqueIdentifier>
     </Filter>
@@ -24,6 +30,9 @@
     </Filter>
     <Filter Include="sinter\engine\application">
       <UniqueIdentifier>{62C64866-CE88-7CF0-1739-0B7D833A55CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\engine\window">
+      <UniqueIdentifier>{26B81F51-1247-A91A-BB65-BD15A7D3B9C0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,10 +67,31 @@
     <ClInclude Include="src\sinter\core\platform.h">
       <Filter>sinter\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\random\random.h">
+      <Filter>sinter\core\random</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\time\timer.h">
+      <Filter>sinter\core\time</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\typedefs.h">
       <Filter>sinter\core</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\types\array.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\types\hashtable.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\types\list.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\types\string.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\types\uuid.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\types\vector.h">
       <Filter>sinter\core\types</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\core\version.h">
@@ -79,16 +109,16 @@
     <ClInclude Include="src\sinter\engine\engine_types.h">
       <Filter>sinter\engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\engine\window\window.h">
+      <Filter>sinter\engine\window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\window\window_types.h">
+      <Filter>sinter\engine\window</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\sinter.h">
       <Filter>sinter</Filter>
     </ClInclude>
-    <ClInclude Include="src\sinter\core\types\hashtable.h" />
-    <ClInclude Include="src\sinter\core\types\list.h" />
-    <ClInclude Include="src\sinter\core\random\random.h" />
-    <ClInclude Include="src\sinter\core\types\array.h" />
-    <ClInclude Include="src\sinter\core\types\vector.h" />
-    <ClInclude Include="src\sinter\core\types\uuid.h" />
-    <ClInclude Include="src\sinter\core\time\timer.h" />
+    <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -98,13 +128,21 @@
     <ClCompile Include="src\sinter\core\memory\memory.cpp">
       <Filter>sinter\core\memory</Filter>
     </ClCompile>
+    <ClCompile Include="src\sinter\core\random\random.cpp">
+      <Filter>sinter\core\random</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\core\time\timer.cpp">
+      <Filter>sinter\core\time</Filter>
+    </ClCompile>
     <ClCompile Include="src\sinter\engine\application\application.cpp">
       <Filter>sinter\engine\application</Filter>
     </ClCompile>
     <ClCompile Include="src\sinter\engine\engine.cpp">
       <Filter>sinter\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\sinter\core\random\random.cpp" />
-    <ClCompile Include="src\sinter\core\time\timer.cpp" />
+    <ClCompile Include="src\sinter\engine\window\window.cpp">
+      <Filter>sinter\engine\window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@
 // STL
 #include <array>
 
-namespace sinter::core
+namespace sinter
 {
 
 	template<typename T, size_t N>

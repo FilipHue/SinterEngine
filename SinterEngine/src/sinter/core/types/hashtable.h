@@ -3,7 +3,7 @@
 // STL
 #include <unordered_map>
 
-namespace  sinter::core
+namespace sinter
 {
 
 	template<typename Key, typename Value>

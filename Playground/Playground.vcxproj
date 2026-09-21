@@ -59,7 +59,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -73,8 +73,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\SinterEngine\dependencies\SPDLOG\lib\Debug\spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\SPDLOG\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Debug\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Debug\spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Debug;..\SinterEngine\dependencies\SPDLOG\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
     </ProjectReference>
@@ -84,7 +84,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,12 +101,15 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\SinterEngine\dependencies\SPDLOG\lib\Release\spdlog.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\SPDLOG\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Release\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Release\spdlog.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Release;..\SinterEngine\dependencies\SPDLOG\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
     </ProjectReference>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="playground.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="playground.cpp" />
@@ -115,9 +118,6 @@
     <ProjectReference Include="..\SinterEngine\SinterEngine.vcxproj">
       <Project>{10C1DA95-FC23-6A3A-A5A9-A2F091EB35BD}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="playground.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

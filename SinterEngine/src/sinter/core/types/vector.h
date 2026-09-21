@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace sinter::core
+namespace sinter
 {
 
 	template <typename T>
