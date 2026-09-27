@@ -4,6 +4,8 @@
 // Internal
 #include <sinter/core/logging/logger.h>
 
+#include <sinter/engine/input/input.h>
+
 namespace sinter::engine
 {
 
@@ -26,11 +28,15 @@ namespace sinter::engine
 
 		m_mainWindow = WindowSystem::GetInstance().Create(l_windowConfig);
 
+		InputSystem::GetInstance().AddWindowInputState(m_mainWindow->GetRID());
+
 		Init();
 	}
 
 	void Application::Teardown()
 	{
+		InputSystem::GetInstance().RemoveWindowInputState(m_mainWindow->GetRID());
+
 		Shutdown();
 	}
 

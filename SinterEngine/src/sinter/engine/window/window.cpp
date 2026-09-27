@@ -26,7 +26,7 @@ namespace sinter::engine
 			}
 		}
 
-		SE_ENGINE_DEBUG("\tWindow system initialized.");
+		SE_ENGINE_DEBUG("\tWindow system initialized successfully!");
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -48,7 +48,7 @@ namespace sinter::engine
 			glfwTerminate();
 		}
 
-		SE_ENGINE_DEBUG("\tWindow system shut down.");
+		SE_ENGINE_DEBUG("\tWindow system shut down successfully!");
 
 		SE_FUNCTION_TRACE_EXIT();
 	}

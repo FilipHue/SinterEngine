@@ -7,6 +7,7 @@
 
 #include <sinter/engine/application/application.h>
 #include <sinter/engine/event/event.h>
+#include <sinter/engine/input/input.h>
 #include <sinter/engine/window/window.h>
 
 namespace sinter::engine
@@ -34,6 +35,7 @@ namespace sinter::engine
 		MemorySystem* m_memorySystem = nullptr;
 		WindowSystem* m_windowSystem = nullptr;	
 		EventSystem* m_eventSystem = nullptr;
+		InputSystem* m_inputSystem = nullptr;
 	};
 
 } // namespace sinter::engine

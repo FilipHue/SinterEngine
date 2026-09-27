@@ -23,4 +23,5 @@
 #include "engine/engine.h"
 #include "engine/application/application.h"
 #include "engine/event/event.h"
+#include "engine/input/input.h"
 #include "engine/window/window.h"

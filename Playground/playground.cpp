@@ -8,6 +8,9 @@ PlaygroundApplication::PlaygroundApplication(const ApplicationConfiguration& p_r
 void PlaygroundApplication::Init()
 {
 	EventSystem::GetInstance().Subscribe(EventType::WindowClose, BIND_EVENTCALLBACK(PlaygroundApplication::OnWindowClose));
+
+	m_state.isRunning = true;
+	m_state.isSuspended = false;
 }
 
 void PlaygroundApplication::Shutdown()
@@ -15,7 +18,12 @@ void PlaygroundApplication::Shutdown()
 }
 
 void PlaygroundApplication::OnProcessUpdate()
-{}
+{
+	if (InputSystem::GetInstance().IsKeyJustPressed(m_mainWindow->GetRID(), KeyCode::Escape))
+	{
+		m_state.isRunning = false;
+	}
+}
 
 b8 PlaygroundApplication::OnWindowClose(EventContext& event)
 {

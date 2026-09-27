@@ -123,6 +123,9 @@
     <ClInclude Include="src\sinter\engine\event\event_types.h" />
     <ClInclude Include="src\sinter\engine\event\event.h" />
     <ClInclude Include="src\sinter\core\types\queue.h" />
+    <ClInclude Include="src\sinter\engine\input\input_types.h" />
+    <ClInclude Include="src\sinter\engine\input\input_codes.h" />
+    <ClInclude Include="src\sinter\engine\input\input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -149,5 +152,6 @@
     </ClCompile>
     <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
     <ClCompile Include="src\sinter\engine\event\event.cpp" />
+    <ClCompile Include="src\sinter\engine\input\input.cpp" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include <sinter/core/memory/memory_utils.h>
 
 #include <sinter/engine/event/event.h>
+#include <sinter/engine/input/input.h>
 
 namespace sinter::platform
 {
@@ -330,11 +331,15 @@ namespace sinter::platform
 			{
 				engine::EventContext event = engine::EventContext::KeyPressed(l_window_rid, key, scancode, mods);
 				engine::EventSystem::GetInstance().Publish(event);
+
+				engine::InputSystem::GetInstance().ProcessKeyEvent(l_window_rid, STATIC_CAST(engine::KeyCode, key), true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
 				engine::EventContext event = engine::EventContext::KeyReleased(l_window_rid, key, scancode, mods);
 				engine::EventSystem::GetInstance().Publish(event);
+
+				engine::InputSystem::GetInstance().ProcessKeyEvent(l_window_rid, STATIC_CAST(engine::KeyCode, key), false);
 			}
 		});
 
@@ -363,6 +368,8 @@ namespace sinter::platform
 			WindowRID l_window_rid = l_internal_state->window_rid;
 			engine::EventContext event = engine::EventContext::MouseMoved(l_window_rid, STATIC_CAST(f32, xpos), STATIC_CAST(f32, ypos));
 			engine::EventSystem::GetInstance().Publish(event);
+
+			engine::InputSystem::GetInstance().ProcessMouseMoveEvent(l_window_rid, STATIC_CAST(f32, xpos), STATIC_CAST(f32, ypos));
 		});
 
 		glfwSetCursorEnterCallback(m_handle, [](GLFWwindow* window, i32 entered)
@@ -393,11 +400,15 @@ namespace sinter::platform
 			{
 				engine::EventContext event = engine::EventContext::MouseButtonPressed(l_window_rid, button, mods);
 				engine::EventSystem::GetInstance().Publish(event);
+
+				engine::InputSystem::GetInstance().ProcessMouseButtonEvent(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
 				engine::EventContext event = engine::EventContext::MouseButtonReleased(l_window_rid, button, mods);
 				engine::EventSystem::GetInstance().Publish(event);
+
+				engine::InputSystem::GetInstance().ProcessMouseButtonEvent(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), false);
 			}
 		});
 
@@ -409,6 +420,8 @@ namespace sinter::platform
 			WindowRID l_window_rid = l_internal_state->window_rid;
 			engine::EventContext event = engine::EventContext::MouseScrolled(l_window_rid, STATIC_CAST(f32, xoffset), STATIC_CAST(f32, yoffset));
 			engine::EventSystem::GetInstance().Publish(event);
+
+			engine::InputSystem::GetInstance().ProcessMouseScrollEvent(l_window_rid, STATIC_CAST(f32, xoffset), STATIC_CAST(f32, yoffset));
 		});
 
 		SE_FUNCTION_TRACE_EXIT();

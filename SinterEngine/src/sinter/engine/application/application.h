@@ -27,6 +27,7 @@ namespace sinter::engine
 		virtual void OnProcessUpdate() = 0;
 
 		b8 IsRunning() const { return m_state.isRunning; }
+		b8 IsSuspended() const { return m_state.isSuspended; }
 
 		const ApplicationConfiguration& GetConfiguration() const { return m_configuration; }
 		const ApplicationState& GetState() const { return m_state; }
