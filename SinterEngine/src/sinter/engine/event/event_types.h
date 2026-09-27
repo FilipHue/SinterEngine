@@ -3,6 +3,7 @@
 // Internal
 #include <sinter/core/defines.h>
 
+#include <sinter/engine/input/input_codes.h>
 #include <sinter/engine/window/window_types.h>
 
 // STL
@@ -18,6 +19,7 @@ namespace sinter::engine
 
 		AppInit,
 		AppUpdate,
+		AppStateChange,
 		AppClose,
 
 		WindowMoved,
@@ -51,6 +53,7 @@ namespace sinter::engine
 
 		case EventType::AppInit:				return "AppInit";
 		case EventType::AppUpdate:				return "AppUpdate";
+		case EventType::AppStateChange:			return "AppStateChange";
 		case EventType::AppClose:				return "AppClose";
 
 		case EventType::WindowMoved:			return "WindowMoved";
@@ -80,21 +83,22 @@ namespace sinter::engine
 	{
 		u8 raw[16]{};
 
-		struct { f32 delta_time; }          app_update;
+		struct { f32 delta_time; }									app_update;
+		struct { b8 isRunning; b8 isSuspended; }					app_state_change;
 
-		struct { i32 x, y; }                window_moved;
-		struct { i32 width, height; }       window_resize;
-		struct { b8 focused; }              window_focus;
-		struct { b8 iconified; }            window_iconify;
-		struct { b8 maximized; }            window_maximize;
-		struct { f32 x, y; }                window_content_scale;
+		struct { i32 x, y; }										window_moved;
+		struct { i32 width, height; }								window_resize;
+		struct { b8 focused; }										window_focus;
+		struct { b8 iconified; }									window_iconify;
+		struct { b8 maximized; }									window_maximize;
+		struct { f32 x, y; }										window_content_scale;
 
-		struct { i32 key, scancode, mods; } key;
-		struct { u32 codepoint; }           key_typed;
+		struct { KeyCode keycode; i32 scancode; KeyModCode mods; }	key;
+		struct { u32 codepoint; }									key_typed;
 
-		struct { f32 x, y; }                mouse_moved;
-		struct { i32 button, mods; }        mouse_button;
-		struct { f32 delta_x, delta_y; }    mouse_scrolled;
+		struct { f32 x, y; }										mouse_moved;
+		struct { MouseButtonCode button; KeyModCode mods; }			mouse_button;
+		struct { f32 delta_x, delta_y; }							mouse_scrolled;
 	};
 
 	struct EventContext
@@ -108,7 +112,6 @@ namespace sinter::engine
 
 		// Application
 		static EventContext AppInit() { return Make(EventType::AppInit); }
-		static EventContext AppClose() { return Make(EventType::AppClose); }
 
 		static EventContext AppUpdate(f32 p_deltaTime)
 		{
@@ -116,6 +119,15 @@ namespace sinter::engine
 			l_event.data.app_update = { p_deltaTime };
 			return l_event;
 		}
+
+		static EventContext AppStateChange(b8 p_isRunning, b8 p_isSuspended)
+		{
+			EventContext l_event = Make(EventType::AppStateChange);
+			l_event.data.app_state_change = { p_isRunning, p_isSuspended };
+			return l_event;
+		}
+
+		static EventContext AppClose() { return Make(EventType::AppClose); }
 
 		// Window
 		static EventContext WindowMoved(WindowRID p_rid, i32 p_x, i32 p_y)
@@ -163,14 +175,14 @@ namespace sinter::engine
 		}
 
 		// Keyboard
-		static EventContext KeyPressed(WindowRID p_rid, i32 p_key, i32 p_scancode, i32 p_mods)
+		static EventContext KeyPressed(WindowRID p_rid, KeyCode p_key, i32 p_scancode, KeyModCode p_mods)
 		{
 			EventContext l_event = Make(EventType::KeyPressed, p_rid);
 			l_event.data.key = { p_key, p_scancode, p_mods };
 			return l_event;
 		}
 
-		static EventContext KeyReleased(WindowRID p_rid, i32 p_key, i32 p_scancode, i32 p_mods)
+		static EventContext KeyReleased(WindowRID p_rid, KeyCode p_key, i32 p_scancode, KeyModCode p_mods)
 		{
 			EventContext l_event = Make(EventType::KeyReleased, p_rid);
 			l_event.data.key = { p_key, p_scancode, p_mods };
@@ -196,14 +208,14 @@ namespace sinter::engine
 
 		static EventContext MouseLeave(WindowRID p_rid) { return Make(EventType::MouseLeave, p_rid); }
 
-		static EventContext MouseButtonPressed(WindowRID p_rid, i32 p_button, i32 p_mods)
+		static EventContext MouseButtonPressed(WindowRID p_rid, MouseButtonCode p_button, KeyModCode p_mods)
 		{
 			EventContext l_event = Make(EventType::MouseButtonPressed, p_rid);
 			l_event.data.mouse_button = { p_button, p_mods };
 			return l_event;
 		}
 
-		static EventContext MouseButtonReleased(WindowRID p_rid, i32 p_button, i32 p_mods)
+		static EventContext MouseButtonReleased(WindowRID p_rid, MouseButtonCode p_button, KeyModCode p_mods)
 		{
 			EventContext l_event = Make(EventType::MouseButtonReleased, p_rid);
 			l_event.data.mouse_button = { p_button, p_mods };

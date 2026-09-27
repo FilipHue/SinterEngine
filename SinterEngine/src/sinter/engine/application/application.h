@@ -11,6 +11,7 @@ namespace sinter::engine
 {
 
 	class Engine;
+	class EventSystem;
 
 	class Application
 	{
@@ -29,14 +30,23 @@ namespace sinter::engine
 		b8 IsRunning() const { return m_state.isRunning; }
 		b8 IsSuspended() const { return m_state.isSuspended; }
 
+		void Quit() { m_state.isRunning = false; NotifyStateChange(); }
+		void Pause() { m_state.isSuspended = true; NotifyStateChange(); }
+		void Resume() { m_state.isSuspended = false; NotifyStateChange(); }
+		void Start() { m_state.isRunning = true; m_state.isSuspended = false; NotifyStateChange(); }
+
+		b8 ShouldUpdate() const { return m_state.isRunning && !m_state.isSuspended; }
+		b8 ShouldRender() const { return m_state.isRunning; }
+
 		const ApplicationConfiguration& GetConfiguration() const { return m_configuration; }
 		const ApplicationState& GetState() const { return m_state; }
 
 	private:
 		void Setup();
 		void Teardown();
+		void NotifyStateChange() const;
 
-	protected:
+	private:
 		ApplicationConfiguration m_configuration;
 		ApplicationState m_state;
 

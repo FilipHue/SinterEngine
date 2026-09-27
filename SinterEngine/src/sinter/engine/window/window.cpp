@@ -5,10 +5,20 @@
 #include <sinter/core/logging/logger.h>
 #include <sinter/core/memory/memory_utils.h>
 
+#include <sinter/engine/event/event_types.h>
+
 #include <sinter/platform/windows/glfw_window.h>
 
 namespace sinter::engine
 {
+
+	b8 Window::OnApplicationStateChange(const EventContext& p_context)
+	{
+		m_state.isRunning = p_context.data.app_state_change.isRunning;
+		m_state.isSuspended = p_context.data.app_state_change.isSuspended;
+
+		return false;
+	}
 
 	void WindowSystem::Init()
 	{

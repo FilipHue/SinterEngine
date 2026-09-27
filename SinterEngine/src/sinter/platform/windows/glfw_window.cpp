@@ -34,6 +34,8 @@ namespace sinter::platform
 
 		m_state.isCursorLocked = HAS_FLAG(p_configuration.cursorMode, CursorModeFlags::Disabled);
 
+		EventSystem::GetInstance().Subscribe(EventType::AppStateChange, BIND_EVENTCALLBACK(GlfwWindow::OnApplicationStateChange));
+
 		SetWindowCreationHints();
 
 		m_monitor = glfwGetPrimaryMonitor();
@@ -329,14 +331,14 @@ namespace sinter::platform
 			WindowRID l_window_rid = l_internal_state->window_rid;
 			if (action == GLFW_PRESS)
 			{
-				engine::EventContext event = engine::EventContext::KeyPressed(l_window_rid, key, scancode, mods);
+				engine::EventContext event = engine::EventContext::KeyPressed(l_window_rid, STATIC_CAST(engine::KeyCode, key), scancode, STATIC_CAST(engine::KeyModCode, mods));
 				engine::EventSystem::GetInstance().Publish(event);
 
 				engine::InputSystem::GetInstance().ProcessKeyEvent(l_window_rid, STATIC_CAST(engine::KeyCode, key), true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				engine::EventContext event = engine::EventContext::KeyReleased(l_window_rid, key, scancode, mods);
+				engine::EventContext event = engine::EventContext::KeyReleased(l_window_rid, STATIC_CAST(engine::KeyCode, key), scancode, STATIC_CAST(engine::KeyModCode, mods));
 				engine::EventSystem::GetInstance().Publish(event);
 
 				engine::InputSystem::GetInstance().ProcessKeyEvent(l_window_rid, STATIC_CAST(engine::KeyCode, key), false);
@@ -398,14 +400,14 @@ namespace sinter::platform
 			WindowRID l_window_rid = l_internal_state->window_rid;
 			if (action == GLFW_PRESS)
 			{
-				engine::EventContext event = engine::EventContext::MouseButtonPressed(l_window_rid, button, mods);
+				engine::EventContext event = engine::EventContext::MouseButtonPressed(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), STATIC_CAST(engine::KeyModCode, mods));
 				engine::EventSystem::GetInstance().Publish(event);
 
 				engine::InputSystem::GetInstance().ProcessMouseButtonEvent(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), true);
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				engine::EventContext event = engine::EventContext::MouseButtonReleased(l_window_rid, button, mods);
+				engine::EventContext event = engine::EventContext::MouseButtonReleased(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), STATIC_CAST(engine::KeyModCode, mods));
 				engine::EventSystem::GetInstance().Publish(event);
 
 				engine::InputSystem::GetInstance().ProcessMouseButtonEvent(l_window_rid, STATIC_CAST(engine::MouseButtonCode, button), false);

@@ -25,14 +25,14 @@ namespace sinter::engine
 		m_memorySystem = &MemorySystem::GetInstance();
 		m_memorySystem->Init();
 
-		m_windowSystem = &WindowSystem::GetInstance();
-		m_windowSystem->Init();
-
 		m_eventSystem = &EventSystem::GetInstance();
 		m_eventSystem->Init();
 
 		m_inputSystem = &InputSystem::GetInstance();
 		m_inputSystem->Init();
+
+		m_windowSystem = &WindowSystem::GetInstance();
+		m_windowSystem->Init();
 
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
@@ -75,9 +75,9 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Shutting down {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
+		m_windowSystem->Shutdown();
 		m_inputSystem->Shutdown();
 		m_eventSystem->Shutdown();
-		m_windowSystem->Shutdown();
 		m_memorySystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");

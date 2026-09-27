@@ -1,6 +1,9 @@
 #include "sepch.h"
 #include "event.h"
 
+// Internal
+#include <sinter/engine/window/window.h>
+
 // STL
 #include <algorithm>
 

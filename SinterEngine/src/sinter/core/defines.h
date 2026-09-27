@@ -33,6 +33,10 @@
 	INLINE EnumType operator&(EnumType a, EnumType b) { return STATIC_CAST(EnumType, STATIC_CAST(u32, a) & STATIC_CAST(u32, b)); } \
 	INLINE EnumType operator~(EnumType a) { return STATIC_CAST(EnumType, ~STATIC_CAST(u32, a)); }
 
+#define DEFINE_ENUM_EQUIVALENT_OPERATORS(EnumType) \
+	INLINE b8 operator==(EnumType a, EnumType b) { return STATIC_CAST(u32, a) == STATIC_CAST(u32, b); } \
+	INLINE b8 operator!=(EnumType a, EnumType b) { return STATIC_CAST(u32, a) != STATIC_CAST(u32, b); }
+
 #define HAS_FLAG(value, flag) ((value & flag) == flag)
 
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

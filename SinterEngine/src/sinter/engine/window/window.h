@@ -9,6 +9,7 @@
 namespace sinter::engine
 {
 
+	struct EventContext;
 	class WindowSystem;
 
 	class Window
@@ -57,6 +58,9 @@ namespace sinter::engine
 
 	private:
 		void SetRID(const WindowRID& p_rid) { m_rid = p_rid; }
+
+	protected:
+		b8 OnApplicationStateChange(const EventContext& p_context);
 
 	protected:
 		WindowConfiguration m_configuration;

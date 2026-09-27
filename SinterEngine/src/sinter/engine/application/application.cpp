@@ -5,6 +5,7 @@
 #include <sinter/core/logging/logger.h>
 
 #include <sinter/engine/input/input.h>
+#include <sinter/engine/event/event.h>
 
 namespace sinter::engine
 {
@@ -38,6 +39,12 @@ namespace sinter::engine
 		InputSystem::GetInstance().RemoveWindowInputState(m_mainWindow->GetRID());
 
 		Shutdown();
+	}
+
+	void Application::NotifyStateChange() const
+	{
+		EventContext l_event = EventContext::AppStateChange(m_state.isRunning, m_state.isSuspended);
+		EventSystem::GetInstance().Publish(l_event);
 	}
 
 } // namespace sinter::engine
