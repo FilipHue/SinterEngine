@@ -1,6 +1,7 @@
 #pragma once
 
 // Internal
+#include <sinter/core/defines.h>
 #include <sinter/core/typedefs.h>
 #include <sinter/core/random/random.h>
 #include <sinter/core/types/string.h>
@@ -12,7 +13,7 @@ namespace sinter::core
 	{
 	public:
 		UUID() : m_UUID(Random::GetUInt64()) { NO_OP; }
-		explicit UUID(u64 p_uuid) : m_UUID(p_uuid) { NO_OP; }
+		constexpr explicit UUID(u64 p_uuid) : m_UUID(p_uuid) { NO_OP; }
 
 		u64 GetUUID() const { return m_UUID; }
 
@@ -44,3 +45,23 @@ namespace std
 	};
 
 } // namespace std
+
+namespace fmt
+{
+
+	template <>
+	struct formatter<sinter::core::UUID>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx)
+		{
+			return ctx.begin();
+		}
+		template <typename FormatContext>
+		auto format(const sinter::core::UUID& p_uuid, FormatContext& ctx) const
+		{
+			return format_to(ctx.out(), "{}", p_uuid.GetUUID());
+		}
+	};
+
+} // namespace fmt

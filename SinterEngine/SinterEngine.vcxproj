@@ -122,6 +122,7 @@
     <ClInclude Include="src\sinter\core\types\array.h" />
     <ClInclude Include="src\sinter\core\types\hashtable.h" />
     <ClInclude Include="src\sinter\core\types\list.h" />
+    <ClInclude Include="src\sinter\core\types\queue.h" />
     <ClInclude Include="src\sinter\core\types\string.h" />
     <ClInclude Include="src\sinter\core\types\uuid.h" />
     <ClInclude Include="src\sinter\core\types\vector.h" />
@@ -130,6 +131,8 @@
     <ClInclude Include="src\sinter\engine\application\application_types.h" />
     <ClInclude Include="src\sinter\engine\engine.h" />
     <ClInclude Include="src\sinter\engine\engine_types.h" />
+    <ClInclude Include="src\sinter\engine\event\event.h" />
+    <ClInclude Include="src\sinter\engine\event\event_types.h" />
     <ClInclude Include="src\sinter\engine\window\window.h" />
     <ClInclude Include="src\sinter\engine\window\window_types.h" />
     <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
@@ -145,6 +148,7 @@
     <ClCompile Include="src\sinter\core\time\timer.cpp" />
     <ClCompile Include="src\sinter\engine\application\application.cpp" />
     <ClCompile Include="src\sinter\engine\engine.cpp" />
+    <ClCompile Include="src\sinter\engine\event\event.cpp" />
     <ClCompile Include="src\sinter\engine\window\window.cpp" />
     <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
   </ItemGroup>

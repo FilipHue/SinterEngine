@@ -8,6 +8,6 @@ namespace sinter
 {
 
 	template <typename T>
-	using Vector = std::vector<T>;
+	using SEVector = std::vector<T>;
 
 } // namespace sinter::core

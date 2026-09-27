@@ -35,7 +35,7 @@ namespace sinter::engine
 		void Setup();
 		void Teardown();
 
-	private:
+	protected:
 		ApplicationConfiguration m_configuration;
 		ApplicationState m_state;
 

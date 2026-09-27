@@ -22,4 +22,5 @@
 // Engine
 #include "engine/engine.h"
 #include "engine/application/application.h"
+#include "engine/event/event.h"
 #include "engine/window/window.h"

@@ -81,5 +81,6 @@ namespace sinter::engine
 	};
 
 	using WindowRID = core::UUID;
+	INLINE constexpr WindowRID InvalidWindowRID = core::UUID(0);
 
 } // namespace sinter::engine

@@ -18,5 +18,7 @@ public:
 
 	void  OnProcessUpdate() override;
 
+	b8 OnWindowClose(EventContext& p_refEvent);
+
 private:
 };

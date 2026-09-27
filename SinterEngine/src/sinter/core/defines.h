@@ -24,7 +24,9 @@
 #define REINTERPRET_CAST(type, expr) reinterpret_cast<type>(expr)
 #define INLINE inline
 
-#define BIT(x) (1 << x)
+#define BIT(x) (1U << (x))
+#define SHIFT_LEFT(x, n) ((x) << (n))
+#define SHIFT_RIGHT(x, n) ((x) >> (n))
 
 #define DEFINE_ENUM_BITWISE_OPERATORS(EnumType) \
 	INLINE EnumType operator|(EnumType a, EnumType b) { return STATIC_CAST(EnumType, STATIC_CAST(u32, a) | STATIC_CAST(u32, b)); } \

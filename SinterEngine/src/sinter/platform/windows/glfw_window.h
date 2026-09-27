@@ -52,6 +52,7 @@ namespace sinter::platform
 		{
 			HINSTANCE instance_handle;
 			HWND window_handle;
+			WindowRID window_rid;
 		};
 
 		void* m_userData = nullptr;

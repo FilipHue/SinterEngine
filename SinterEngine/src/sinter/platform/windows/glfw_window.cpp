@@ -4,6 +4,8 @@
 // Internal
 #include <sinter/core/memory/memory_utils.h>
 
+#include <sinter/engine/event/event.h>
+
 namespace sinter::platform
 {
 
@@ -22,6 +24,14 @@ namespace sinter::platform
 		m_state.height = m_configuration.height;
 		m_state.posX = m_configuration.posX;
 		m_state.posY = m_configuration.posY;
+
+		m_state.isRunning = true;
+		m_state.isSuspended = false;
+		m_state.isFocused = true;
+		m_state.isMinimized = false;
+		m_state.isFullscreen = HAS_FLAG(p_configuration.windowMode, WindowModeFlags::Fullscreen);
+
+		m_state.isCursorLocked = HAS_FLAG(p_configuration.cursorMode, CursorModeFlags::Disabled);
 
 		SetWindowCreationHints();
 
@@ -47,6 +57,7 @@ namespace sinter::platform
 
 		l_internal_state->instance_handle = GetModuleHandle(nullptr);
 		l_internal_state->window_handle = glfwGetWin32Window(m_handle);
+		l_internal_state->window_rid = m_rid;
 
 		m_state.userData = l_internal_state;
 
@@ -70,14 +81,6 @@ namespace sinter::platform
 		{
 			SetCursorPosition(STATIC_CAST(f32, m_configuration.width) / 2, STATIC_CAST(f32, m_configuration.height) / 2);
 		}
-
-		m_state.isRunning = true;
-		m_state.isSuspended = false;
-		m_state.isFocused = true;
-		m_state.isMinimized = false;
-		m_state.isFullscreen = HAS_FLAG(p_configuration.windowMode, WindowModeFlags::Fullscreen);
-
-		m_state.isCursorLocked = HAS_FLAG(p_configuration.cursorMode, CursorModeFlags::Disabled);
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -231,18 +234,184 @@ namespace sinter::platform
 		glfwWindowHint(GLFW_RESIZABLE, HAS_FLAG(m_configuration.flags, WindowCreationFlags::Resizable) ? GLFW_TRUE : GLFW_FALSE);
 		glfwWindowHint(GLFW_DECORATED, HAS_FLAG(m_configuration.flags, WindowCreationFlags::Decorated) ? GLFW_TRUE : GLFW_FALSE);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
-		glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
+		glfwWindowHint(GLFW_FOCUSED, m_state.isFocused ? GLFW_TRUE : GLFW_FALSE);
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
 	void GlfwWindow::SetWindowCallbacks()
-	{}
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		glfwSetWindowPosCallback(m_handle, [](GLFWwindow* window, i32 x, i32 y)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowMoved(l_window_rid, x, y);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowSizeCallback(m_handle, [](GLFWwindow* window, i32 width, i32 height)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowResize(l_window_rid, width, height);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowCloseCallback(m_handle, [](GLFWwindow* window)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowClose(l_window_rid);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowFocusCallback(m_handle, [](GLFWwindow* window, i32 focused)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowFocus(l_window_rid, focused == GLFW_TRUE);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowIconifyCallback(m_handle, [](GLFWwindow* window, i32 iconified)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowIconify(l_window_rid, iconified == GLFW_TRUE);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowMaximizeCallback(m_handle, [](GLFWwindow* window, i32 maximized)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowMaximize(l_window_rid, maximized == GLFW_TRUE);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetWindowContentScaleCallback(m_handle, [](GLFWwindow* window, f32 xscale, f32 yscale)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::WindowContentScale(l_window_rid, xscale, yscale);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
 
 	void GlfwWindow::SetKeyboardCallbacks()
-	{}
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		glfwSetKeyCallback(m_handle, [](GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			if (action == GLFW_PRESS)
+			{
+				engine::EventContext event = engine::EventContext::KeyPressed(l_window_rid, key, scancode, mods);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				engine::EventContext event = engine::EventContext::KeyReleased(l_window_rid, key, scancode, mods);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+		});
+
+		glfwSetCharCallback(m_handle, [](GLFWwindow* window, u32 codepoint)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::KeyTyped(l_window_rid, codepoint);
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
 
 	void GlfwWindow::SetMouseCallbacks()
-	{}
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		glfwSetCursorPosCallback(m_handle, [](GLFWwindow* window, f64 xpos, f64 ypos)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::MouseMoved(l_window_rid, STATIC_CAST(f32, xpos), STATIC_CAST(f32, ypos));
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		glfwSetCursorEnterCallback(m_handle, [](GLFWwindow* window, i32 entered)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			if (entered == GLFW_TRUE)
+			{
+				engine::EventContext event = engine::EventContext::MouseEnter(l_window_rid);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+			else
+			{
+				engine::EventContext event = engine::EventContext::MouseLeave(l_window_rid);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+		});
+
+		glfwSetMouseButtonCallback(m_handle, [](GLFWwindow* window, i32 button, i32 action, i32 mods)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			if (action == GLFW_PRESS)
+			{
+				engine::EventContext event = engine::EventContext::MouseButtonPressed(l_window_rid, button, mods);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+			else if (action == GLFW_RELEASE)
+			{
+				engine::EventContext event = engine::EventContext::MouseButtonReleased(l_window_rid, button, mods);
+				engine::EventSystem::GetInstance().Publish(event);
+			}
+		});
+
+		glfwSetScrollCallback(m_handle, [](GLFWwindow* window, f64 xoffset, f64 yoffset)
+		{
+			WindowInternalState* l_internal_state = STATIC_CAST(WindowInternalState*, glfwGetWindowUserPointer(window));
+			SE_ASSERT(l_internal_state != nullptr, "Window internal state is null.");
+
+			WindowRID l_window_rid = l_internal_state->window_rid;
+			engine::EventContext event = engine::EventContext::MouseScrolled(l_window_rid, STATIC_CAST(f32, xoffset), STATIC_CAST(f32, yoffset));
+			engine::EventSystem::GetInstance().Publish(event);
+		});
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
 
 } // namespace sinter::platform

@@ -6,8 +6,8 @@
 #include <sinter/core/memory/memory.h>
 
 #include <sinter/engine/application/application.h>
+#include <sinter/engine/event/event.h>
 #include <sinter/engine/window/window.h>
-
 
 namespace sinter::engine
 {
@@ -33,6 +33,7 @@ namespace sinter::engine
 
 		MemorySystem* m_memorySystem = nullptr;
 		WindowSystem* m_windowSystem = nullptr;	
+		EventSystem* m_eventSystem = nullptr;
 	};
 
 } // namespace sinter::engine

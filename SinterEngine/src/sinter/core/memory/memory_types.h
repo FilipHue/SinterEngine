@@ -6,7 +6,7 @@
 // STL
 #include <memory>
 
-namespace sinter::core
+namespace sinter
 {
 
 	template <typename T>
