@@ -2,6 +2,7 @@
 
 // Internal
 #include <sinter/core/typedefs.h>
+#include <sinter/core/types/object.h>
 
 // STL
 #include <chrono>
@@ -9,7 +10,7 @@
 namespace sinter::core
 {
 
-	class Timer
+	class Timer : public SEObject
 	{
 	public:
 		Timer(b8 p_startImmediately = false);

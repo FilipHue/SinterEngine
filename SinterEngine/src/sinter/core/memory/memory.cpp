@@ -11,6 +11,9 @@ namespace sinter::core
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
+		m_type.className = "MemorySystem";
+		m_type.classID = typeid(MemorySystem).hash_code();
+
 		SE_ENGINE_DEBUG("\tMemorySystem initialized.");
 
 		SE_FUNCTION_TRACE_EXIT();

@@ -119,6 +119,7 @@
       <Filter>sinter</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
+    <ClInclude Include="src\sinter\core\types\object.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />

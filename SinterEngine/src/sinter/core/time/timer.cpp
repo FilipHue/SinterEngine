@@ -9,7 +9,8 @@ namespace sinter::core
 
 	Timer::Timer(b8 p_startImmediately) : m_startTime(Clock::now()), m_elapsedTime(0.0), m_running(p_startImmediately), m_paused(false)
 	{
-		NO_OP;
+		m_type.className = "Timer";
+		m_type.classID = typeid(Timer).hash_code();
 	}
 
 	void Timer::Start()

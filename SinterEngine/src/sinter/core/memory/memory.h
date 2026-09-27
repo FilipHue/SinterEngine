@@ -5,11 +5,12 @@
 #include "memory_utils.h"
 
 #include <sinter/core/patterns/singleton.h>
+#include <sinter/core/types/object.h>
 
 namespace sinter::core
 {
 
-	class MemorySystem final : public Singleton<MemorySystem>
+	class MemorySystem final : public Singleton<MemorySystem>, public SEObject
 	{
 		friend class Singleton<MemorySystem>;
 
