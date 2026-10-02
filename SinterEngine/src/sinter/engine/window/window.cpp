@@ -14,8 +14,8 @@ namespace sinter::engine
 
 	b8 Window::OnApplicationStateChange(const EventContext& p_context)
 	{
-		m_state.isRunning = p_context.data.app_state_change.isRunning;
-		m_state.isSuspended = p_context.data.app_state_change.isSuspended;
+		m_state.isRunning = p_context.data.app_state_change.state.isRunning;
+		m_state.isSuspended = p_context.data.app_state_change.state.isSuspended;
 
 		return false;
 	}

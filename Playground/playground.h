@@ -17,6 +17,9 @@ public:
 	void Shutdown() override;
 
 	void OnProcessUpdate() override;
+	void OnRenderBegin() override;
+	void OnRenderUpdate() override;
+	void OnRenderEnd() override;
 
 	b8 OnWindowMove(EventContext& p_refEvent);
 	b8 OnWindowResize(EventContext& p_refEvent);
@@ -34,6 +37,4 @@ public:
 	b8 OnMouseButtonPressed(EventContext& p_refEvent);
 	b8 OnMouseButtonReleased(EventContext& p_refEvent);
 	b8 OnMouseScrolled(EventContext& p_refEvent);
-
-private:
 };

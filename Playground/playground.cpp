@@ -23,8 +23,6 @@ void PlaygroundApplication::Init()
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonPressed, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonPressed));
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonReleased, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonReleased));
 	EventSystem::GetInstance().Subscribe(EventType::MouseScrolled, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseScrolled));
-
-	Start();
 }
 
 void PlaygroundApplication::Shutdown()
@@ -32,6 +30,18 @@ void PlaygroundApplication::Shutdown()
 }
 
 void PlaygroundApplication::OnProcessUpdate()
+{
+}
+
+void PlaygroundApplication::OnRenderBegin()
+{
+}
+
+void PlaygroundApplication::OnRenderUpdate()
+{
+}
+
+void PlaygroundApplication::OnRenderEnd()
 {
 }
 

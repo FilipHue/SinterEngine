@@ -13,7 +13,7 @@ namespace sinter::core
 	class Timer : public SEObject
 	{
 	public:
-		Timer(b8 p_startImmediately = false);
+		Timer(b8 p_autostart = false);
 		virtual ~Timer() = default;
 
 		void Start();

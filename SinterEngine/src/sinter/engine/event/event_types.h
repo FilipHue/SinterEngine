@@ -3,6 +3,7 @@
 // Internal
 #include <sinter/core/defines.h>
 
+#include <sinter/engine/application/application_types.h>
 #include <sinter/engine/input/input_codes.h>
 #include <sinter/engine/window/window_types.h>
 
@@ -84,7 +85,7 @@ namespace sinter::engine
 		u8 raw[16]{};
 
 		struct { f32 delta_time; }									app_update;
-		struct { b8 isRunning; b8 isSuspended; }					app_state_change;
+		struct { ApplicationState state; }							app_state_change;
 
 		struct { i32 x, y; }										window_moved;
 		struct { i32 width, height; }								window_resize;
@@ -120,10 +121,10 @@ namespace sinter::engine
 			return l_event;
 		}
 
-		static EventContext AppStateChange(b8 p_isRunning, b8 p_isSuspended)
+		static EventContext AppStateChange(ApplicationState p_state)
 		{
 			EventContext l_event = Make(EventType::AppStateChange);
-			l_event.data.app_state_change = { p_isRunning, p_isSuspended };
+			l_event.data.app_state_change = { p_state.isRunning, p_state.isSuspended };
 			return l_event;
 		}
 

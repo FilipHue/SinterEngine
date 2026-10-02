@@ -87,8 +87,7 @@ namespace sinter::engine
 		void PollEvents();
 
 	private:
-		WindowSystem() = default;
-		~WindowSystem() = default;
+		DEFAULT_CTOR_AND_DTOR(WindowSystem);
 
 	private:
 		struct WindowSlot

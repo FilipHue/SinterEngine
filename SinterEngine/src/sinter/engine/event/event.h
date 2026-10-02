@@ -34,8 +34,7 @@ namespace sinter::engine
 		void DispatchEvents();
 
 	private:
-		EventSystem() = default;
-		~EventSystem() = default;
+		DEFAULT_CTOR_AND_DTOR(EventSystem);
 
 		static u32 TypeIndexFromID(SubscriptionID p_id) { return STATIC_CAST(u32, p_id & 0xFF); }
 

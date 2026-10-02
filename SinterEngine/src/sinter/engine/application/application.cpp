@@ -12,7 +12,7 @@ namespace sinter::engine
 
 	Application::Application(const ApplicationConfiguration& p_refConfiguration) : m_configuration(p_refConfiguration)
 	{
-		NO_OP;
+		Start();
 	}
 
 	void Application::Setup()
@@ -43,7 +43,7 @@ namespace sinter::engine
 
 	void Application::NotifyStateChange() const
 	{
-		EventContext l_event = EventContext::AppStateChange(m_state.isRunning, m_state.isSuspended);
+		EventContext l_event = EventContext::AppStateChange(m_state);
 		EventSystem::GetInstance().Publish(l_event);
 	}
 

@@ -25,8 +25,7 @@ namespace sinter::engine
 		void Shutdown();
 
 	private:
-		Engine() = default;
-		~Engine() = default;
+		DEFAULT_CTOR_AND_DTOR(Engine);
 
 	private:
 		EngineConfiguration m_configuration;

@@ -20,8 +20,7 @@ namespace sinter::core
         }
 
     protected:
-        Singleton() = default;
-        ~Singleton() = default;
+        DEFAULT_CTOR_AND_DTOR(Singleton);
     };
 
 } // namespace sinter::core

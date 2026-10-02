@@ -12,22 +12,22 @@ namespace sinter::core
 	class UUID
 	{
 	public:
-		UUID() : m_UUID(Random::GetUInt64()) { NO_OP; }
-		constexpr explicit UUID(u64 p_uuid) : m_UUID(p_uuid) { NO_OP; }
+		UUID() : m_id(Random::GetUInt64()) { NO_OP; }
+		constexpr explicit UUID(u64 p_uuid) : m_id(p_uuid) { NO_OP; }
 
-		u64 GetUUID() const { return m_UUID; }
+		u64 GetUUID() const { return m_id; }
 
-		SEString ToString() const { return std::to_string(m_UUID); }
+		SEString ToString() const { return std::to_string(m_id); }
 
-		operator u64() const { return m_UUID; }
-		b8 operator==(const UUID& p_other) const { return m_UUID == p_other.m_UUID; }
-		b8 operator!=(const UUID& p_other) const { return m_UUID != p_other.m_UUID; }
-		b8 operator<(const UUID& p_other) const { return m_UUID < p_other.m_UUID; }
+		operator u64() const { return m_id; }
+		b8 operator==(const UUID& p_other) const { return m_id == p_other.m_id; }
+		b8 operator!=(const UUID& p_other) const { return m_id != p_other.m_id; }
+		b8 operator<(const UUID& p_other) const { return m_id < p_other.m_id; }
 
 		static UUID Generate() { return UUID(); }
 
 	private:
-		u64 m_UUID;
+		u64 m_id;
 	};
 
 } // namespace sinter::core

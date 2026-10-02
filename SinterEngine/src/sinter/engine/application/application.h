@@ -11,7 +11,6 @@ namespace sinter::engine
 {
 
 	class Engine;
-	class EventSystem;
 
 	class Application
 	{
@@ -26,6 +25,9 @@ namespace sinter::engine
 		virtual void Shutdown() = 0;
 
 		virtual void OnProcessUpdate() = 0;
+		virtual void OnRenderBegin() = 0;
+		virtual void OnRenderUpdate() = 0;
+		virtual void OnRenderEnd() = 0;
 
 		b8 IsRunning() const { return m_state.isRunning; }
 		b8 IsSuspended() const { return m_state.isSuspended; }

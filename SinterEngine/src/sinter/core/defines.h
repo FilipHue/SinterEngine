@@ -54,8 +54,8 @@
 #define DEFAULT_CTOR(Class) Class() = default;
 #define DEFAULT_DTOR(Class) ~Class() = default;
 #define  DEFAULT_CTOR_AND_DTOR(Class) \
-	Class() = default; \
-	~Class() = default;
+	DEFAULT_CTOR(Class) \
+	DEFAULT_DTOR(Class)
 
 #define DEFAULT_COPY(Class) \
 	Class(const Class&) = default; \
@@ -75,11 +75,11 @@
 	DEFAULT_COPY(Class) \
 	DEFAULT_MOVE(Class)
 
-#define NO_DEFAULT_CTOR(ClassName) \
-	ClassName() = delete;
-
-#define NO_DEFAULT_DTOR(ClassName) \
-	~ClassName() = delete;
+#define NO_DEFAULT_CTOR(ClassName) ClassName() = delete;
+#define NO_DEFAULT_DTOR(ClassName) ~ClassName() = delete;
+#define NO_DEFAULT_CTOR_AND_DTOR(ClassName) \
+	NO_DEFAULT_CTOR(ClassName) \
+	NO_DEFAULT_DTOR(ClassName)
 
 #define NO_COPY(ClassName) \
 	ClassName(const ClassName&) = delete; \
@@ -88,6 +88,10 @@
 #define NO_MOVE(ClassName) \
 	ClassName(ClassName&&) = delete; \
 	ClassName& operator=(ClassName&&) = delete;
+
+#define NO_COPY_AND_MOVE(ClassName) \
+	NO_COPY(ClassName) \
+	NO_MOVE(ClassName)
 
 // GETTERS
 

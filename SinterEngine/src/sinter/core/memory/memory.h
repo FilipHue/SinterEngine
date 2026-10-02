@@ -74,17 +74,17 @@ namespace sinter::core
 		}
 
 		template<typename T>
-		void FillMem(T* p_ptrDestination, u8 value, size_t p_count)
+		void FillMem(T* p_ptrDestination, u8 p_value, size_t p_count)
 		{
 			u8* l_destination_bytes = REINTERPRET_CAST(u8*, p_ptrDestination);
-			std::memset(l_destination_bytes, value, p_count * sizeof(T));
+			std::memset(l_destination_bytes, p_value, p_count * sizeof(T));
 		}
 
 		template<typename T, typename Pattern>
-		void FillMemPattern(T* p_ptrDestination, const Pattern& pattern, size_t p_count)
+		void FillMemPattern(T* p_ptrDestination, const Pattern& p_refPattern, size_t p_count)
 		{
 			u8* l_destination_bytes = REINTERPRET_CAST(u8*, p_ptrDestination);
-			const u8* l_pattern_bytes = REINTERPRET_CAST(const u8*, &pattern);
+			const u8* l_pattern_bytes = REINTERPRET_CAST(const u8*, &p_refPattern);
 			size_t l_pattern_size = sizeof(Pattern);
 			size_t l_total_size = p_count * sizeof(T);
 
@@ -131,8 +131,7 @@ namespace sinter::core
 		}
 
 	private:
-		MemorySystem() = default;
-		~MemorySystem() = default;
+		DEFAULT_CTOR_AND_DTOR(MemorySystem);
 	};
 
 } // namespace sinter::core

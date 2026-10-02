@@ -55,8 +55,7 @@ namespace sinter::engine
 		void UpdateInputStates();
 
 	private:
-		InputSystem() = default;
-		~InputSystem() = default;
+		DEFAULT_CTOR_AND_DTOR(InputSystem);
 
 	private:
 		SEUnorderedMap<WindowRID, InputState> m_windowInputStates;
