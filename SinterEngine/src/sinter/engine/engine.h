@@ -3,6 +3,7 @@
 // Internal
 #include "engine_types.h"
 
+#include <sinter/core/io/filesystem/file.h>
 #include <sinter/core/memory/memory.h>
 
 #include <sinter/engine/application/application.h>
@@ -31,6 +32,7 @@ namespace sinter::engine
 		EngineConfiguration m_configuration;
 		Application* m_application = nullptr;
 
+		io::FileSystem* m_fileSystem = nullptr;
 		MemorySystem* m_memorySystem = nullptr;
 		WindowSystem* m_windowSystem = nullptr;	
 		EventSystem* m_eventSystem = nullptr;

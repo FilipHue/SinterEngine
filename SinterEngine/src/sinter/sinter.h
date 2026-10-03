@@ -8,6 +8,7 @@
 #include "core/typedefs.h"
 #include "core/version.h"
 
+#include "core/io/filesystem/file.h"
 #include "core/logging/logger.h"
 #include "core/memory/memory.h"
 #include "core/patterns/singleton.h"

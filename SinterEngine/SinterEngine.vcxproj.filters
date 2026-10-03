@@ -126,6 +126,10 @@
     <ClInclude Include="src\sinter\engine\input\input_types.h" />
     <ClInclude Include="src\sinter\engine\input\input_codes.h" />
     <ClInclude Include="src\sinter\engine\input\input.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\file.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\path.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\file_types.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\directory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -153,5 +157,8 @@
     <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
     <ClCompile Include="src\sinter\engine\event\event.cpp" />
     <ClCompile Include="src\sinter\engine\input\input.cpp" />
+    <ClCompile Include="src\sinter\core\io\filesystem\file.cpp" />
+    <ClCompile Include="src\sinter\core\io\filesystem\path.cpp" />
+    <ClCompile Include="src\sinter\core\io\filesystem\directory.cpp" />
   </ItemGroup>
 </Project>

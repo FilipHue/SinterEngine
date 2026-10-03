@@ -22,6 +22,9 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
+		m_fileSystem = &io::FileSystem::GetInstance();
+		m_fileSystem->Init();
+
 		m_memorySystem = &MemorySystem::GetInstance();
 		m_memorySystem->Init();
 
@@ -79,6 +82,7 @@ namespace sinter::engine
 		m_inputSystem->Shutdown();
 		m_eventSystem->Shutdown();
 		m_memorySystem->Shutdown();
+		m_fileSystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");
 

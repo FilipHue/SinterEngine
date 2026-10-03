@@ -108,6 +108,10 @@
     <ClInclude Include="src\sinter\core\api.h" />
     <ClInclude Include="src\sinter\core\assert.h" />
     <ClInclude Include="src\sinter\core\defines.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\directory.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\file.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\file_types.h" />
+    <ClInclude Include="src\sinter\core\io\filesystem\path.h" />
     <ClInclude Include="src\sinter\core\logging\logger.h" />
     <ClInclude Include="src\sinter\core\logging\logger_types.h" />
     <ClInclude Include="src\sinter\core\memory\memory.h" />
@@ -145,6 +149,9 @@
     <ClCompile Include="src\sepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\sinter\core\io\filesystem\directory.cpp" />
+    <ClCompile Include="src\sinter\core\io\filesystem\file.cpp" />
+    <ClCompile Include="src\sinter\core\io\filesystem\path.cpp" />
     <ClCompile Include="src\sinter\core\logging\logger.cpp" />
     <ClCompile Include="src\sinter\core\memory\memory.cpp" />
     <ClCompile Include="src\sinter\core\random\random.cpp" />

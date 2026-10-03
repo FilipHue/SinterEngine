@@ -5,6 +5,7 @@
 
 using namespace sinter;
 using namespace core;
+using namespace core::io;
 using namespace engine;
 
 class PlaygroundApplication : public Application
