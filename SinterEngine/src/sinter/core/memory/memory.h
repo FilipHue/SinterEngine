@@ -7,7 +7,7 @@
 #include <sinter/core/patterns/singleton.h>
 #include <sinter/core/types/object.h>
 
-namespace sinter::core
+namespace sinter::core::memory
 {
 
 	class MemorySystem final : public Singleton<MemorySystem>, public SEObject
@@ -134,4 +134,4 @@ namespace sinter::core
 		DEFAULT_CTOR_AND_DTOR(MemorySystem);
 	};
 
-} // namespace sinter::core
+} // namespace sinter::core::memory

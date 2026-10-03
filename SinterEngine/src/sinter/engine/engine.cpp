@@ -10,6 +10,8 @@ namespace sinter::engine
 {
 
 	using namespace core;
+	using namespace core::io;
+	using namespace core::memory;
 
 	void Engine::Initialize(EngineConfiguration p_configuration)
 	{
@@ -22,7 +24,7 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
-		m_fileSystem = &io::FileSystem::GetInstance();
+		m_fileSystem = &FileSystem::GetInstance();
 		m_fileSystem->Init();
 
 		m_memorySystem = &MemorySystem::GetInstance();

@@ -15,6 +15,8 @@ namespace sinter::engine
 {
 
 	using namespace core;
+	using namespace core::io;
+	using namespace core::memory;
 
 	class Engine final : public core::Singleton<Engine>
 	{
@@ -32,7 +34,7 @@ namespace sinter::engine
 		EngineConfiguration m_configuration;
 		Application* m_application = nullptr;
 
-		io::FileSystem* m_fileSystem = nullptr;
+		FileSystem* m_fileSystem = nullptr;
 		MemorySystem* m_memorySystem = nullptr;
 		WindowSystem* m_windowSystem = nullptr;	
 		EventSystem* m_eventSystem = nullptr;

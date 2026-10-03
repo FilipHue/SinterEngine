@@ -4,7 +4,7 @@
 // Internal
 #include <sinter/core/logging/logger.h>
 
-namespace sinter::core
+namespace sinter::core::memory
 {
 
 	void MemorySystem::Init()
@@ -28,4 +28,4 @@ namespace sinter::core
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-} // namespace sinter::core
+} // namespace sinter::core::memory
