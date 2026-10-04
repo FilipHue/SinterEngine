@@ -10,6 +10,7 @@ namespace sinter::engine
 {
 
 	using namespace core;
+	using namespace core::error;
 	using namespace core::io;
 	using namespace core::memory;
 
@@ -24,8 +25,12 @@ namespace sinter::engine
 
 		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
 
+		m_errorSystem = &ErrorSystem::GetInstance();
+		m_errorSystem->Init();
+
 		m_fileSystem = &FileSystem::GetInstance();
 		m_fileSystem->Init();
+		m_fileSystem->SetRootDirectory(m_configuration.currentWorkingDirectory);
 
 		m_memorySystem = &MemorySystem::GetInstance();
 		m_memorySystem->Init();
@@ -38,6 +43,9 @@ namespace sinter::engine
 
 		m_windowSystem = &WindowSystem::GetInstance();
 		m_windowSystem->Init();
+
+		File l_errorLogFile = m_fileSystem->MakeFile(FileLoadInfo(Path("error.log"), FileContentType::Text, FileAccessModeFlags::ReadWrite));
+		m_errorSystem->SetLogFile(std::move(l_errorLogFile));
 
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
@@ -85,6 +93,7 @@ namespace sinter::engine
 		m_eventSystem->Shutdown();
 		m_memorySystem->Shutdown();
 		m_fileSystem->Shutdown();
+		m_errorSystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");
 

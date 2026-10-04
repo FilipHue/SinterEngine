@@ -23,6 +23,8 @@ namespace sinter::engine
 		AppStateChange,
 		AppClose,
 
+		EngineError,
+
 		WindowMoved,
 		WindowResize,
 		WindowClose,
@@ -56,6 +58,7 @@ namespace sinter::engine
 		case EventType::AppUpdate:				return "AppUpdate";
 		case EventType::AppStateChange:			return "AppStateChange";
 		case EventType::AppClose:				return "AppClose";
+		case EventType::EngineError:			return "EngineError";
 
 		case EventType::WindowMoved:			return "WindowMoved";
 		case EventType::WindowResize:			return "WindowResize";
@@ -100,6 +103,7 @@ namespace sinter::engine
 		struct { f32 x, y; }										mouse_moved;
 		struct { MouseButtonCode button; KeyModCode mods; }			mouse_button;
 		struct { f32 delta_x, delta_y; }							mouse_scrolled;
+		struct { u64 error_id; u8 severity; }						error;
 	};
 
 	struct EventContext
@@ -227,6 +231,13 @@ namespace sinter::engine
 		{
 			EventContext l_event = Make(EventType::MouseScrolled, p_rid);
 			l_event.data.mouse_scrolled = { p_deltaX, p_deltaY };
+			return l_event;
+		}
+
+		static EventContext EngineError(u64 p_errorID, u8 p_severity = 0)
+		{
+			EventContext l_event = Make(EventType::EngineError);
+			l_event.data.error = { p_errorID, p_severity };
 			return l_event;
 		}
 

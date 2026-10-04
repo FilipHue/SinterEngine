@@ -12,7 +12,7 @@ namespace sinter::core::io
 
 	File::File(const FileLoadInfo& loadInfo)
 		:	m_path(loadInfo.path),
-			m_content({ loadInfo.contentType, "", 0 })
+			m_content(FileContent(loadInfo.contentType, ""))
 	{
 		m_type.className = "File";
 		m_type.classID = typeid(File).hash_code();
@@ -128,26 +128,27 @@ namespace sinter::core::io
 		return STATIC_CAST(u64, std::filesystem::file_size(p_refFilePath.GetPath()));
 	}
 
-	void FileSystem::MakeFile(const Path& p_refFilePath) const
+	File FileSystem::MakeFile(const FileLoadInfo& p_refLoadInfo) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		if (Exists(p_refFilePath))
+		if (Exists(p_refLoadInfo.path))
 		{
 			SE_FUNCTION_TRACE_EXIT();
-			return;
+			return File(p_refLoadInfo);
 		}
 
-		std::ofstream l_fileStream(p_refFilePath.GetPath());
+		std::ofstream l_fileStream(p_refLoadInfo.path.GetPath());
 		if (!l_fileStream.is_open())
 		{
 			SE_FUNCTION_TRACE_EXIT();
-			return;
+			return File(p_refLoadInfo);
 		}
 
 		l_fileStream.close();
 
 		SE_FUNCTION_TRACE_EXIT();
+		return File(p_refLoadInfo);
 	}
 
 	// Directory operations

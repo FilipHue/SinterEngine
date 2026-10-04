@@ -130,6 +130,8 @@
     <ClInclude Include="src\sinter\core\io\filesystem\path.h" />
     <ClInclude Include="src\sinter\core\io\filesystem\file_types.h" />
     <ClInclude Include="src\sinter\core\io\filesystem\directory.h" />
+    <ClInclude Include="src\sinter\core\error\error_types.h" />
+    <ClInclude Include="src\sinter\core\error\error.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
@@ -160,5 +162,6 @@
     <ClCompile Include="src\sinter\core\io\filesystem\file.cpp" />
     <ClCompile Include="src\sinter\core\io\filesystem\path.cpp" />
     <ClCompile Include="src\sinter\core\io\filesystem\directory.cpp" />
+    <ClCompile Include="src\sinter\core\error\error.cpp" />
   </ItemGroup>
 </Project>

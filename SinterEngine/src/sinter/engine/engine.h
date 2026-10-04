@@ -3,6 +3,7 @@
 // Internal
 #include "engine_types.h"
 
+#include <sinter/core/error/error.h>
 #include <sinter/core/io/filesystem/file.h>
 #include <sinter/core/memory/memory.h>
 
@@ -15,6 +16,7 @@ namespace sinter::engine
 {
 
 	using namespace core;
+	using namespace core::error;
 	using namespace core::io;
 	using namespace core::memory;
 
@@ -34,6 +36,7 @@ namespace sinter::engine
 		EngineConfiguration m_configuration;
 		Application* m_application = nullptr;
 
+		ErrorSystem* m_errorSystem = nullptr;
 		FileSystem* m_fileSystem = nullptr;
 		MemorySystem* m_memorySystem = nullptr;
 		WindowSystem* m_windowSystem = nullptr;	

@@ -11,7 +11,7 @@ namespace sinter::core::io
 	class File final : public SEObject
 	{
 	public:
-		NO_DEFAULT_CTOR(File);
+		DEFAULT_CTOR(File);
 		File(const FileLoadInfo& loadInfo);
 		DEFAULT_DTOR(File);
 
@@ -52,7 +52,7 @@ namespace sinter::core::io
 		b8 FileIsEmpty(const Path& p_refFilePath) const;
 		u64 FileGetSize(const Path& p_refFilePath) const;
 
-		void MakeFile(const Path& p_refFilePath) const;
+		File MakeFile(const FileLoadInfo& p_refLoadInfo) const;
 		
 		// Directory operations
 		b8 DirectoryIsEmpty(const Path& p_refDirPath) const;

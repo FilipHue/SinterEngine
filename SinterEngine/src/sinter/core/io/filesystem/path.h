@@ -14,7 +14,7 @@ namespace sinter::core::io
 	class Path final : public SEObject
 	{
 	public:
-		NO_DEFAULT_CTOR(Path);
+		DEFAULT_CTOR(Path);
 		Path(const SEString& p_refpath);
 		DEFAULT_DTOR(Path);
 
