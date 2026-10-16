@@ -44,8 +44,15 @@ namespace sinter::engine
 		m_windowSystem = &WindowSystem::GetInstance();
 		m_windowSystem->Init();
 
-		File l_errorLogFile = m_fileSystem->MakeFile(FileLoadInfo(Path("error.log"), FileContentType::Text, FileAccessModeFlags::ReadWrite));
+		File l_errorLogFile{ "error_log.txt" };
 		m_errorSystem->SetLogFile(std::move(l_errorLogFile));
+
+		ErrorSystem::OnFatalErrorCallbackFn onFatalErrorCallback = [&](ErrorRecord record)
+		{
+			EventContext fatalErrorEvent = EventContext::EngineFatalError(std::move(record));
+			m_eventSystem->QueueEvent(fatalErrorEvent);
+		};
+		m_errorSystem->SetOnFatalErrorCallback(onFatalErrorCallback);
 
 		SE_ENGINE_DEBUG("Engine initialized successfully!");
 
@@ -68,13 +75,14 @@ namespace sinter::engine
 		while (m_application->IsRunning())
 		{
 			m_inputSystem->UpdateInputStates();
-			m_windowSystem->PollEvents();
-			m_eventSystem->DispatchEvents();
 
 			if (!m_application->IsSuspended())
 			{
 				m_application->OnProcessUpdate();
 			}
+
+			m_eventSystem->DispatchEvents();
+			m_windowSystem->PollEvents();
 		}
 
 		m_application->Teardown();
@@ -93,6 +101,8 @@ namespace sinter::engine
 		m_eventSystem->Shutdown();
 		m_memorySystem->Shutdown();
 		m_fileSystem->Shutdown();
+
+		m_errorSystem->DumpErrorTraceToFile();
 		m_errorSystem->Shutdown();
 
 		SE_ENGINE_DEBUG("Engine shut down successfully!");

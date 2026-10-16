@@ -48,6 +48,8 @@ namespace sinter::engine
 		void Teardown();
 		void NotifyStateChange() const;
 
+		b8 OnFatalError(EventContext& p_refEvent);
+
 	private:
 		ApplicationConfiguration m_configuration;
 		ApplicationState m_state;

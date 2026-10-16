@@ -1,8 +1,12 @@
 #pragma once
 
 // Internal
-#include "directory.h"
-#include "path.h"
+#include <sinter/core/defines.h>
+#include <sinter/core/types/object.h>
+#include <sinter/core/types/string.h>
+
+// STL
+#include <filesystem>
 
 namespace sinter::core::io
 {
@@ -13,67 +17,37 @@ namespace sinter::core::io
 	constexpr const char* FILE_PATH_SEPARATOR = "/";
 #endif
 
-	enum class FileAccessModeFlags : u32
+	constexpr u32 MAX_FILE_CONTENT_SIZE = 1024 * 1024 * 1024; // 1 GB
+
+	class File final : public SEObject
 	{
-		None		= 0,
-		Read		= BIT(0),
-		Write		= BIT(1),
-		ReadWrite	= BIT(0) | BIT(1),
-
-		Count
-	};
-
-	DEFINE_ENUM_BITWISE_OPERATORS(FileAccessModeFlags);
-
-	enum class FileContentType : u32
-	{
-		None	= 0,
-		Text	= 1,
-		Binary	= 2,
-
-		Count
-	};
-
-	struct FileLoadInfo
-	{
-		Path path{ "" };
-		FileContentType contentType{ FileContentType::None };
-		FileAccessModeFlags accessMode{ FileAccessModeFlags::Read };
-
-		DEFAULT_CTOR_AND_DTOR(FileLoadInfo);
-		FileLoadInfo(const Path& p_refPath, FileContentType p_contentType = FileContentType::None, FileAccessModeFlags p_accessMode = FileAccessModeFlags::Read)
-			: path(p_refPath), contentType(p_contentType), accessMode(p_accessMode)
+	public:
+		DEFAULT_CTOR(File);
+		File(std::string path) 
+			: m_path(std::move(path))
 		{
-			NO_OP;
+			m_type.className = "File";
+			m_type.classID = typeid(File).hash_code();
 		}
-	};
+		DEFAULT_DTOR(File);
 
-	struct FileSaveInfo
-	{
-		Path path{ "" };
-		FileContentType contentType{ FileContentType::None };
-		FileAccessModeFlags accessMode{ FileAccessModeFlags::Write };
+		const SEString& GetAbsolutePath() const { return std::filesystem::absolute(m_path).string(); }
+		const SEString& GetRelativePath() const { return m_path; }
+		const SEString& GetAbsoluteDirectory() const { return std::filesystem::absolute(m_path).parent_path().string(); }
+		const SEString& GetRelativeDirectory() const { return std::filesystem::path(m_path).parent_path().string(); }
+		const SEString& GetName() const { return std::filesystem::path(m_path).filename().string(); }
+		const SEString& GetExtension() const { return std::filesystem::path(m_path).extension().string(); }
+		const SEString& GetStem() const { return std::filesystem::path(m_path).stem().string(); }
 
-		DEFAULT_CTOR_AND_DTOR(FileSaveInfo);
-		FileSaveInfo(const Path& p_refPath, FileContentType p_contentType = FileContentType::None, FileAccessModeFlags p_accessMode = FileAccessModeFlags::Write)
-			: path(p_refPath), contentType(p_contentType), accessMode(p_accessMode)
-		{
-			NO_OP;
-		}
-	};
+		const SEString& GetPath() const { return m_path; }
+		void SetPath(SEString p_path) { m_path = std::move(p_path); }
 
-	struct FileContent
-	{
-		FileContentType contentType{ FileContentType::None };
-		SEString content{ "" };
-		u64 size{ 0 };
+		const SEString& GetContent() const { return m_content; }
+		void SetContent(SEString p_content) { m_content = std::move(p_content); }
 
-		DEFAULT_CTOR_AND_DTOR(FileContent);
-		FileContent(FileContentType p_contentType, const SEString& p_refContent)
-			: contentType(p_contentType), content(p_refContent), size(STATIC_CAST(u64, p_refContent.size()))
-		{
-			NO_OP;
-		}
+	private:
+		std::string m_path;
+		std::string m_content;
 	};
 
 } // namespace sinter::core::io

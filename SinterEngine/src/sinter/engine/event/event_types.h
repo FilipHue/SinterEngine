@@ -2,6 +2,7 @@
 
 // Internal
 #include <sinter/core/defines.h>
+#include <sinter/core/error/error_types.h>
 
 #include <sinter/engine/application/application_types.h>
 #include <sinter/engine/input/input_codes.h>
@@ -23,8 +24,6 @@ namespace sinter::engine
 		AppStateChange,
 		AppClose,
 
-		EngineError,
-
 		WindowMoved,
 		WindowResize,
 		WindowClose,
@@ -45,6 +44,8 @@ namespace sinter::engine
 		MouseButtonReleased,
 		MouseScrolled,
 
+		EngineFatalError,
+
 		Count
 	};
 
@@ -58,7 +59,6 @@ namespace sinter::engine
 		case EventType::AppUpdate:				return "AppUpdate";
 		case EventType::AppStateChange:			return "AppStateChange";
 		case EventType::AppClose:				return "AppClose";
-		case EventType::EngineError:			return "EngineError";
 
 		case EventType::WindowMoved:			return "WindowMoved";
 		case EventType::WindowResize:			return "WindowResize";
@@ -78,6 +78,8 @@ namespace sinter::engine
 		case EventType::MouseButtonPressed:		return "MouseButtonPressed";
 		case EventType::MouseButtonReleased:	return "MouseButtonReleased";
 		case EventType::MouseScrolled:			return "MouseScrolled";
+
+		case EventType::EngineFatalError:		return "EngineFatalError";
 
 		default:								return "Unknown";
 		}
@@ -103,7 +105,8 @@ namespace sinter::engine
 		struct { f32 x, y; }										mouse_moved;
 		struct { MouseButtonCode button; KeyModCode mods; }			mouse_button;
 		struct { f32 delta_x, delta_y; }							mouse_scrolled;
-		struct { u64 error_id; u8 severity; }						error;
+
+		struct { core::error::ErrorRecord record; }					engine_fatal_error;
 	};
 
 	struct EventContext
@@ -234,10 +237,10 @@ namespace sinter::engine
 			return l_event;
 		}
 
-		static EventContext EngineError(u64 p_errorID, u8 p_severity = 0)
+		static EventContext EngineFatalError(core::error::ErrorRecord p_record)
 		{
-			EventContext l_event = Make(EventType::EngineError);
-			l_event.data.error = { p_errorID, p_severity };
+			EventContext l_event = Make(EventType::EngineFatalError);
+			l_event.data.engine_fatal_error = { std::move(p_record) };
 			return l_event;
 		}
 

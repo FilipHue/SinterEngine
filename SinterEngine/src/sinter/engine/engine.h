@@ -20,14 +20,48 @@ namespace sinter::engine
 	using namespace core::io;
 	using namespace core::memory;
 
-	class Engine final : public core::Singleton<Engine>
+	class Engine final : public Singleton<Engine>
 	{
-		friend class core::Singleton<Engine>;
+		friend class Singleton<Engine>;
 
 	public:
 		void Initialize(EngineConfiguration p_configuration);
 		void Run(Application* p_ptrApplication);
 		void Shutdown();
+
+		template <typename T>
+		static T* GetSystem()
+		{
+			if constexpr (std::is_same_v<T, ErrorSystem>)
+			{
+				return Engine::GetInstance().m_errorSystem;
+			}
+			else if constexpr (std::is_same_v<T, FileSystem>)
+			{
+				return Engine::GetInstance().m_fileSystem;
+			}
+			else if constexpr (std::is_same_v<T, MemorySystem>)
+			{
+				return Engine::GetInstance().m_memorySystem;
+			}
+			else if constexpr (std::is_same_v<T, WindowSystem>)
+			{
+				return Engine::GetInstance().m_windowSystem;
+			}
+			else if constexpr (std::is_same_v<T, EventSystem>)
+			{
+				return Engine::GetInstance().m_eventSystem;
+			}
+			else if constexpr (std::is_same_v<T, InputSystem>)
+			{
+				return Engine::GetInstance().m_inputSystem;
+			}
+			else
+			{
+				SE_STATIC_ASSERT(false, "Requested system type is not supported.");
+				return nullptr;
+			}
+		}
 
 	private:
 		DEFAULT_CTOR_AND_DTOR(Engine);

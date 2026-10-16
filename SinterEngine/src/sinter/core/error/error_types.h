@@ -2,12 +2,15 @@
 
 // Internal
 #include <sinter/core/defines.h>
+#include <sinter/core/memory/memory.h>
 #include <sinter/core/typedefs.h>
 #include <sinter/core/types/string.h>
 #include <sinter/core/types/vector.h>
 
 namespace sinter::core::error
 {
+
+	constexpr u16 MAX_ERROR_MESSAGE_LENGTH = 256;
 
 	enum class ErrorSeverity : u8
 	{
@@ -38,6 +41,8 @@ namespace sinter::core::error
 		FileReadError		= 3,
 		FileWriteError		= 4,
 		FileAlreadyExists	= 5,
+
+		Unknown				= 0xFFFF,
 
 		Count = 6
 	};
@@ -83,8 +88,14 @@ namespace sinter::core::error
 		ErrorSeverity severity;
 		ErrorCategory category;
 		ErrorCode code;
-		const char* message;
-		const char* context;
+		char message[MAX_ERROR_MESSAGE_LENGTH];
+
+		DEFAULT_CTOR_AND_DTOR(ErrorRecord);
+		ErrorRecord(ErrorSeverity p_severity, ErrorCategory p_category, ErrorCode p_code, const char* p_message)
+			: severity(p_severity), category(p_category), code(p_code)
+		{
+			memory::MemorySystem::GetInstance().CopyMem(message, p_message, MAX_ERROR_MESSAGE_LENGTH);
+		}
 	};
 
 } // namespace sinter::core::error

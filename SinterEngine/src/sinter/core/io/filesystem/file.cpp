@@ -2,21 +2,15 @@
 #include "file.h"
 
 // Internal
+#include <sinter/core/error/error.h>
 #include <sinter/core/logging/logger.h>
+#include <sinter/core/memory/memory.h>
 
 // STL
 #include <filesystem>
 
 namespace sinter::core::io
 {
-
-	File::File(const FileLoadInfo& loadInfo)
-		:	m_path(loadInfo.path),
-			m_content(FileContent(loadInfo.contentType, ""))
-	{
-		m_type.className = "File";
-		m_type.classID = typeid(File).hash_code();
-	}
 
 	void FileSystem::Init()
 	{
@@ -25,7 +19,7 @@ namespace sinter::core::io
 		m_type.className = "FileSystem";
 		m_type.classID = typeid(FileSystem).hash_code();
 
-		m_rootDirectory.SetPath(std::filesystem::current_path().string());
+		m_rootDirectory = std::filesystem::current_path().string();
 
 		SE_CORE_DEBUG("\tFileSystem initialized successfully!");
 
@@ -42,34 +36,38 @@ namespace sinter::core::io
 	}
 
 	// File operations
-	File FileSystem::LoadFile(const FileLoadInfo& p_refLoadInfo) const
+	File FileSystem::LoadFile(const std::string& p_refPath) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
 		std::ifstream l_fileStream;
-
-		if (p_refLoadInfo.contentType == FileContentType::Binary)
-		{
-			l_fileStream.open(p_refLoadInfo.path.GetPath(), std::ios::in | std::ios::binary);
-		}
-		else
-		{
-			l_fileStream.open(p_refLoadInfo.path.GetPath(), std::ios::in);
-		}
+		l_fileStream.open(p_refPath, std::ios::in | std::ios::binary);
 
 		if (!l_fileStream.is_open())
 		{
-			SE_CORE_ERROR("Failed to open file: {}", p_refLoadInfo.path.GetPath());
+			SE_CORE_WARN("Failed to open file: {}", p_refPath);
+
+			char l_errorMessage[error::MAX_ERROR_MESSAGE_LENGTH];
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage, "Failed to open file: ", 21);
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage + 21, p_refPath.c_str(), p_refPath.size());
+			l_errorMessage[21 + p_refPath.size()] = '\0';
+
+			error::ErrorSystem::GetInstance().Log(error::ErrorRecord(
+				error::ErrorSeverity::Warning,
+				error::ErrorCategory::IO,
+				error::ErrorCode::FileReadError,
+				l_errorMessage
+			));
 			SE_FUNCTION_TRACE_EXIT();
-			return File(p_refLoadInfo);
+			return File(p_refPath);
 		}
 
 		std::stringstream l_stringStream;
 		l_stringStream << l_fileStream.rdbuf();
 
-		File file(p_refLoadInfo);
+		File file(p_refPath);
 		auto content = l_stringStream.str();
-		file.SetContent(content);
+		file.SetContent(std::move(content));
 
 		l_fileStream.close();
 
@@ -77,264 +75,85 @@ namespace sinter::core::io
 		return file;
 	}
 
-	void FileSystem::SaveFile(const FileSaveInfo& p_refSaveInfo, const File& inFile) const
+	void FileSystem::SaveFile(const File& p_refFile) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
 		std::ofstream l_fileStream;
-
-		if (p_refSaveInfo.contentType == FileContentType::Binary)
-			l_fileStream.open(p_refSaveInfo.path.GetPath(), std::ios::out | std::ios::binary);
-		else
-			l_fileStream.open(p_refSaveInfo.path.GetPath(), std::ios::out);
+		l_fileStream.open(p_refFile.GetPath(), std::ios::out | std::ios::binary);
 
 		if (!l_fileStream.is_open())
 		{
-			SE_CORE_ERROR("Failed to open file: {}", p_refSaveInfo.path.GetPath());
+			SE_CORE_WARN("Failed to open file: {}", p_refFile.GetPath());
+
+			char l_errorMessage[error::MAX_ERROR_MESSAGE_LENGTH];
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage, "Failed to open file: ", 21);
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage + 21, p_refFile.GetPath().c_str(), p_refFile.GetPath().size());
+			l_errorMessage[21 + p_refFile.GetPath().size()] = '\0';
+
+			error::ErrorSystem::GetInstance().Log(error::ErrorRecord(
+				error::ErrorSeverity::Warning,
+				error::ErrorCategory::IO,
+				error::ErrorCode::FileWriteError,
+				l_errorMessage
+			));
+
 			SE_FUNCTION_TRACE_EXIT();
 			return;
 		}
 
-		l_fileStream << inFile.GetContent();
-
-		SE_FUNCTION_TRACE_EXIT();
-	}
-
-	b8 FileSystem::FileIsEmpty(const Path& p_refFilePath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refFilePath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return false;
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return std::filesystem::is_empty(p_refFilePath.GetPath());
-	}
-
-	u64 FileSystem::FileGetSize(const Path& p_refFilePath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refFilePath) || !Exists(p_refFilePath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return 0;
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return STATIC_CAST(u64, std::filesystem::file_size(p_refFilePath.GetPath()));
-	}
-
-	File FileSystem::MakeFile(const FileLoadInfo& p_refLoadInfo) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (Exists(p_refLoadInfo.path))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return File(p_refLoadInfo);
-		}
-
-		std::ofstream l_fileStream(p_refLoadInfo.path.GetPath());
-		if (!l_fileStream.is_open())
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return File(p_refLoadInfo);
-		}
-
+		l_fileStream << p_refFile.GetContent();
 		l_fileStream.close();
 
 		SE_FUNCTION_TRACE_EXIT();
-		return File(p_refLoadInfo);
 	}
 
-	// Directory operations
-	b8 FileSystem::DirectoryIsEmpty(const Path& dir) const
+	void FileSystem::SaveFile(const File& p_refFile, const std::string& p_refPath) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		if (!Exists(dir))
+		std::ofstream l_fileStream;
+		l_fileStream.open(p_refPath, std::ios::out | std::ios::binary);
+
+		if (!l_fileStream.is_open())
 		{
-			SE_FUNCTION_TRACE_EXIT();
-			return false;
-		}
+			SE_CORE_WARN("Failed to open file: {}", p_refPath);
 
-		auto it = std::filesystem::directory_iterator(dir.GetPath());
-		b8 empty = (it == std::filesystem::end(it));
+			char l_errorMessage[error::MAX_ERROR_MESSAGE_LENGTH];
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage, "Failed to open file: ", 21);
+			memory::MemorySystem::GetInstance().CopyMem(l_errorMessage + 21, p_refPath.c_str(), p_refPath.size());
+			l_errorMessage[21 + p_refPath.size()] = '\0';
 
-		SE_FUNCTION_TRACE_EXIT();
-		return empty;
-	}
-
-	u64 FileSystem::DirectoryGetSize(const Path& dir, b8 recursive) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(dir))
-		{
-			SE_CORE_WARN("Directory does not exist: {}", dir.GetPath());
-			SE_FUNCTION_TRACE_EXIT();
-			return 0;
-		}
-
-		u64 total = 0;
-		if (recursive)
-		{
-			for (auto& p : std::filesystem::recursive_directory_iterator(dir.GetPath()))
-			{
-				if (std::filesystem::is_regular_file(p.path()))
-				{
-					total += static_cast<u64>(std::filesystem::file_size(p.path()));
-				}
-			}
-		}
-		else
-		{
-			for (auto& p : std::filesystem::directory_iterator(dir.GetPath()))
-			{
-				if (std::filesystem::is_regular_file(p.path()))
-				{
-					total += static_cast<u64>(std::filesystem::file_size(p.path()));
-				}
-			}
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return total;
-	}
-
-	void FileSystem::MakeDirectory(const Path& dir, b8 recursive) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (Exists(dir))
-		{
-			SE_CORE_WARN("Directory already exists: {}", dir.GetPath());
+			error::ErrorSystem::GetInstance().Log(error::ErrorRecord(
+				error::ErrorSeverity::Warning,
+				error::ErrorCategory::IO,
+				error::ErrorCode::FileWriteError,
+				l_errorMessage
+			));
 			SE_FUNCTION_TRACE_EXIT();
 			return;
 		}
 
-		b8 ok = recursive ? std::filesystem::create_directories(dir.GetPath()) : std::filesystem::create_directory(dir.GetPath());
-		if (!ok)
-		{
-			SE_CORE_ERROR("Failed to create directory: {}", dir.GetPath());
-			SE_FUNCTION_TRACE_EXIT();
-			return;
-		}
-			
-		SE_FUNCTION_TRACE_EXIT();
-	}
-
-	// Utility functions
-	b8 FileSystem::Exists(const Path& p_refPath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-		SE_FUNCTION_TRACE_EXIT();
-		return std::filesystem::exists(std::filesystem::path(p_refPath.GetPath()));
-	}
-
-	b8 FileSystem::IsFile(const Path& p_refPath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refPath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return false;
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return std::filesystem::is_regular_file(std::filesystem::path(p_refPath.GetPath()));
-	}
-
-	b8 FileSystem::IsDirectory(const Path& p_refPath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refPath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return false;
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return std::filesystem::is_directory(std::filesystem::path(p_refPath.GetPath()));
-	}
-
-	u64 FileSystem::GetLastWriteTime(const Path& p_refPath) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refPath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return 0;
-		}
-
-		SE_FUNCTION_TRACE_EXIT();
-		return STATIC_CAST(u64, std::filesystem::last_write_time(std::filesystem::path(p_refPath.GetPath())).time_since_epoch().count());
-	}
-
-	void FileSystem::Rename(const Path& p_refPath, const Path& p_refNewName) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refPath))
-		{
-			SE_FUNCTION_TRACE_EXIT();
-			return;
-		}
-
-		std::filesystem::rename(p_refPath.GetPath(), p_refNewName.GetPath());
+		l_fileStream << p_refFile.GetContent();
+		l_fileStream.close();
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-	void FileSystem::Remove(const Path& p_refPath, b8 recursive) const
+	b8 FileSystem::Exists(const std::string& p_refPath) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
-
-		if (!Exists(p_refPath))
-		{
-			SE_CORE_WARN("Path does not exist: {}", p_refPath.GetPath());
-			SE_FUNCTION_TRACE_EXIT();
-			return;
-		}
-
-		if (recursive)
-		{
-			std::filesystem::remove_all(p_refPath.GetPath());
-		}
-		else
-		{
-			std::filesystem::remove(p_refPath.GetPath());
-		}
-
 		SE_FUNCTION_TRACE_EXIT();
+
+		return std::filesystem::exists(p_refPath);
 	}
 
-	Path FileSystem::Join(const SEString& parent, const SEString& child) const
+	std::string FileSystem::JoinPath(const std::string& p_refPath1, const std::string& p_refPath2) const
 	{
 		SE_FUNCTION_TRACE_ENTER();
-
-		std::filesystem::path p(parent);
-		p /= child;
-
 		SE_FUNCTION_TRACE_EXIT();
-		return Path(p.string());
-	}
 
-	SEString FileSystem::NormalizePath(const SEString& p_path) const
-	{
-		SE_FUNCTION_TRACE_ENTER();
-
-		std::filesystem::path l_path(p_path);
-
-		SE_FUNCTION_TRACE_EXIT();
-		return l_path.lexically_normal().string();
+		return (std::filesystem::path(p_refPath1) / std::filesystem::path(p_refPath2)).string();
 	}
 
 } // namespace sinter::core::io

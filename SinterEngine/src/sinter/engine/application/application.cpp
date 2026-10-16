@@ -31,6 +31,8 @@ namespace sinter::engine
 
 		InputSystem::GetInstance().AddWindowInputState(m_mainWindow->GetRID());
 
+		EventSystem::GetInstance().Subscribe(EventType::EngineFatalError, BIND_EVENTCALLBACK(Application::OnFatalError));
+
 		Init();
 	}
 
@@ -45,6 +47,13 @@ namespace sinter::engine
 	{
 		EventContext l_event = EventContext::AppStateChange(m_state);
 		EventSystem::GetInstance().Publish(l_event);
+	}
+
+	b8 Application::OnFatalError(EventContext& p_refEvent)
+	{
+		SE_CORE_CRITICAL("Application received a fatal error event. Shutting down...");
+		Quit();
+		return true;
 	}
 
 } // namespace sinter::engine
