@@ -52,10 +52,15 @@
 // CONSTRUCTORS AND ASSIGNMENT OPERATORS
 
 #define DEFAULT_CTOR(Class) Class() = default;
+#define VIRTUAL_DEFAULT_CTOR(Class) virtual Class() = default;
 #define DEFAULT_DTOR(Class) ~Class() = default;
-#define  DEFAULT_CTOR_AND_DTOR(Class) \
+#define VIRTUAL_DEFAULT_DTOR(Class) virtual ~Class() = default;
+#define DEFAULT_CTOR_AND_DTOR(Class) \
 	DEFAULT_CTOR(Class) \
 	DEFAULT_DTOR(Class)
+#define VIRTUAL_DEFAULT_CTOR_AND_DTOR(Class) \
+	VIRTUAL_DEFAULT_CTOR(Class) \
+	VIRTUAL_DEFAULT_DTOR(Class)
 
 #define DEFAULT_COPY(Class) \
 	Class(const Class&) = default; \

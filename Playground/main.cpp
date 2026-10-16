@@ -3,6 +3,7 @@
 // Playground
 #include "playground.h"
 
+
 int main(int argc, char** argv)
 {
 	ApplicationConfiguration appConfig;

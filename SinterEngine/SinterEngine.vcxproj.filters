@@ -7,6 +7,15 @@
     <Filter Include="sinter\core">
       <UniqueIdentifier>{527FE203-BE34-5BF9-4729-55D0B3DD51FD}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sinter\core\error">
+      <UniqueIdentifier>{2BCCB326-97E2-B1BC-E059-3DDE4CAF8244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\core\io">
+      <UniqueIdentifier>{F9EB7356-E5B9-675C-CE4D-D882BABA43C1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\core\io\filesystem">
+      <UniqueIdentifier>{ADF8D58A-19BB-0915-626B-98A1CE6CE2F2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="sinter\core\logging">
       <UniqueIdentifier>{082AE4B5-748B-C1C3-FDF8-07766959F882}</UniqueIdentifier>
     </Filter>
@@ -31,8 +40,20 @@
     <Filter Include="sinter\engine\application">
       <UniqueIdentifier>{62C64866-CE88-7CF0-1739-0B7D833A55CE}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sinter\engine\event">
+      <UniqueIdentifier>{B040E1AB-1CA2-BEB9-A50F-056C1170F578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\engine\input">
+      <UniqueIdentifier>{5E6F25AC-CAD0-02BA-533E-496CBF9E3979}</UniqueIdentifier>
+    </Filter>
     <Filter Include="sinter\engine\window">
       <UniqueIdentifier>{26B81F51-1247-A91A-BB65-BD15A7D3B9C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\platform">
+      <UniqueIdentifier>{4E84E016-BA0F-4EDB-C320-D1CF2F2BAADB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sinter\platform\windows">
+      <UniqueIdentifier>{A83464C4-146C-AC5B-1D76-107F892CD354}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +66,18 @@
     </ClInclude>
     <ClInclude Include="src\sinter\core\defines.h">
       <Filter>sinter\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\error\error.h">
+      <Filter>sinter\core\error</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\error\error_types.h">
+      <Filter>sinter\core\error</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\io\filesystem\file.h">
+      <Filter>sinter\core\io\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\io\filesystem\file_types.h">
+      <Filter>sinter\core\io\filesystem</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\core\logging\logger.h">
       <Filter>sinter\core\logging</Filter>
@@ -85,6 +118,12 @@
     <ClInclude Include="src\sinter\core\types\list.h">
       <Filter>sinter\core\types</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\core\types\object.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\core\types\queue.h">
+      <Filter>sinter\core\types</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\core\types\string.h">
       <Filter>sinter\core\types</Filter>
     </ClInclude>
@@ -109,32 +148,42 @@
     <ClInclude Include="src\sinter\engine\engine_types.h">
       <Filter>sinter\engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\engine\event\event.h">
+      <Filter>sinter\engine\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\event\event_types.h">
+      <Filter>sinter\engine\event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\input\input.h">
+      <Filter>sinter\engine\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\input\input_codes.h">
+      <Filter>sinter\engine\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sinter\engine\input\input_types.h">
+      <Filter>sinter\engine\input</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\engine\window\window.h">
       <Filter>sinter\engine\window</Filter>
     </ClInclude>
     <ClInclude Include="src\sinter\engine\window\window_types.h">
       <Filter>sinter\engine\window</Filter>
     </ClInclude>
+    <ClInclude Include="src\sinter\platform\windows\glfw_window.h">
+      <Filter>sinter\platform\windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\sinter\sinter.h">
       <Filter>sinter</Filter>
     </ClInclude>
-    <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
-    <ClInclude Include="src\sinter\core\types\object.h" />
-    <ClInclude Include="src\sinter\engine\event\event_types.h" />
-    <ClInclude Include="src\sinter\engine\event\event.h" />
-    <ClInclude Include="src\sinter\core\types\queue.h" />
-    <ClInclude Include="src\sinter\engine\input\input_types.h" />
-    <ClInclude Include="src\sinter\engine\input\input_codes.h" />
-    <ClInclude Include="src\sinter\engine\input\input.h" />
-    <ClInclude Include="src\sinter\core\io\filesystem\file.h" />
-    <ClInclude Include="src\sinter\core\io\filesystem\path.h" />
-    <ClInclude Include="src\sinter\core\io\filesystem\file_types.h" />
-    <ClInclude Include="src\sinter\core\io\filesystem\directory.h" />
-    <ClInclude Include="src\sinter\core\error\error_types.h" />
-    <ClInclude Include="src\sinter\core\error\error.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\sepch.cpp" />
+    <ClCompile Include="src\sinter\core\error\error.cpp">
+      <Filter>sinter\core\error</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\core\io\filesystem\file.cpp">
+      <Filter>sinter\core\io\filesystem</Filter>
+    </ClCompile>
     <ClCompile Include="src\sinter\core\logging\logger.cpp">
       <Filter>sinter\core\logging</Filter>
     </ClCompile>
@@ -153,15 +202,17 @@
     <ClCompile Include="src\sinter\engine\engine.cpp">
       <Filter>sinter\engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\sinter\engine\event\event.cpp">
+      <Filter>sinter\engine\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sinter\engine\input\input.cpp">
+      <Filter>sinter\engine\input</Filter>
+    </ClCompile>
     <ClCompile Include="src\sinter\engine\window\window.cpp">
       <Filter>sinter\engine\window</Filter>
     </ClCompile>
-    <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
-    <ClCompile Include="src\sinter\engine\event\event.cpp" />
-    <ClCompile Include="src\sinter\engine\input\input.cpp" />
-    <ClCompile Include="src\sinter\core\io\filesystem\file.cpp" />
-    <ClCompile Include="src\sinter\core\io\filesystem\path.cpp" />
-    <ClCompile Include="src\sinter\core\io\filesystem\directory.cpp" />
-    <ClCompile Include="src\sinter\core\error\error.cpp" />
+    <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp">
+      <Filter>sinter\platform\windows</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

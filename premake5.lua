@@ -59,7 +59,7 @@ project "SinterEngine"
         defines
         {
             "SINTER_DEBUG",
-            "SINTER_ENABLE_ASSERTS"
+            "SINTER_ENABLE_ASSERTS",
         }
         symbols "On"
 
@@ -132,7 +132,7 @@ project "Playground"
         defines
         {
             "SINTER_DEBUG",
-            "SINTER_ENABLE_ASSERTS"
+            "SINTER_ENABLE_ASSERTS",
         }
         symbols "On"
 

@@ -23,6 +23,9 @@ void PlaygroundApplication::Init()
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonPressed, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonPressed));
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonReleased, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonReleased));
 	EventSystem::GetInstance().Subscribe(EventType::MouseScrolled, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseScrolled));
+	
+	//Engine::GetSystem<ErrorSystem>()->Log(ErrorRecord(ErrorSeverity::Info, ErrorCategory::General, ErrorCode::Unknown, "PlaygroundApplication initialized.", "PlaygroundApplication::Init"));
+	Engine::GetSystem<FileSystem>()->LoadFile("hello.txt");
 }
 
 void PlaygroundApplication::Shutdown()
@@ -31,6 +34,8 @@ void PlaygroundApplication::Shutdown()
 
 void PlaygroundApplication::OnProcessUpdate()
 {
+	//Engine::GetSystem<ErrorSystem>()->Log(ErrorRecord(ErrorSeverity::Critical, ErrorCategory::General, ErrorCode::Unknown, "This is a test critical message.", "PlaygroundApplication::OnProcessUpdate"));
+	//SE_CLIENT_INFO("OnProcessUpdate called. Application is running: {}, Application is suspended: {}", IsRunning(), IsSuspended());
 }
 
 void PlaygroundApplication::OnRenderBegin()

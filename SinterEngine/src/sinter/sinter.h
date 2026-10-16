@@ -8,11 +8,13 @@
 #include "core/typedefs.h"
 #include "core/version.h"
 
+#include "core/error/error.h"
 #include "core/io/filesystem/file.h"
 #include "core/logging/logger.h"
 #include "core/memory/memory.h"
 #include "core/patterns/singleton.h"
 #include "core/random/random.h"
+#include "core/time/timer.h"
 
 #include "core/types/array.h"
 #include "core/types/vector.h"

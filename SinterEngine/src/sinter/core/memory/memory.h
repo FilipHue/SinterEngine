@@ -19,35 +19,35 @@ namespace sinter::core::memory
 		void Shutdown();
 
 		template<typename T>
-		void CopyMem(T* p_ptrDestination, const T* p_ptrSource, size_t p_count)
+		void CopyMem(T* p_ptrDestination, const T* p_ptrSource, size_t p_size)
 		{
-			std::memcpy(p_ptrDestination, p_ptrSource, sizeof(T) * p_count);
+			std::memcpy(p_ptrDestination, p_ptrSource, p_size);
 		}
 
 		template<typename T>
-		void SetMem(T* p_ptrDestination, u8 value, size_t p_count)
+		void SetMem(T* p_ptrDestination, u8 value, size_t p_size)
 		{
-			std::memset(p_ptrDestination, value, sizeof(T) * p_count);
+			std::memset(p_ptrDestination, value, p_size);
 		}
 
 		template<typename T>
-		void MoveMem(T* p_ptrDestination, const T* p_ptrSource, size_t p_count)
+		void MoveMem(T* p_ptrDestination, const T* p_ptrSource, size_t p_size)
 		{
-			std::memmove(p_ptrDestination, p_ptrSource, sizeof(T) * p_count);
+			std::memmove(p_ptrDestination, p_ptrSource, p_size);
 		}
 
 		template<typename T>
-		void ZeroMem(T* p_ptrDestination, size_t p_count)
+		void ZeroMem(T* p_ptrDestination, size_t p_size)
 		{
-			SetMem(p_ptrDestination, 0, p_count);
+			SetMem(p_ptrDestination, 0, p_size);
 		}
 
 		template<typename T>
-		i32 CompareMem(const T* p_ptrLhs, const T* p_ptrRhs, size_t p_count, i32* p_firstDifferenceIndex = nullptr)
+		i32 CompareMem(const T* p_ptrLhs, const T* p_ptrRhs, size_t p_size, i32* p_firstDifferenceIndex = nullptr)
 		{
 			const u8* l_lhsBytes = REINTERPRET_CAST(const u8*, p_ptrLhs);
 			const u8* l_rhsBytes = REINTERPRET_CAST(const u8*, p_ptrRhs);
-			size_t l_total_bytes = p_count * sizeof(T);
+			size_t l_total_bytes = p_size;
 
 			i32 l_result;
 			for (size_t i = 0; i < l_total_bytes; ++i)
@@ -57,7 +57,7 @@ namespace sinter::core::memory
 					l_result = (l_lhsBytes[i] < l_rhsBytes[i]) ? -1 : 1;
 					if (p_firstDifferenceIndex)
 					{
-						*p_firstDifferenceIndex = i;
+						*p_firstDifferenceIndex = STATIC_CAST(i32, i);
 					}
 					return l_result;
 
@@ -74,19 +74,19 @@ namespace sinter::core::memory
 		}
 
 		template<typename T>
-		void FillMem(T* p_ptrDestination, u8 p_value, size_t p_count)
+		void FillMem(T* p_ptrDestination, u8 p_value, size_t p_size)
 		{
 			u8* l_destination_bytes = REINTERPRET_CAST(u8*, p_ptrDestination);
-			std::memset(l_destination_bytes, p_value, p_count * sizeof(T));
+			std::memset(l_destination_bytes, p_value, p_size);
 		}
 
 		template<typename T, typename Pattern>
-		void FillMemPattern(T* p_ptrDestination, const Pattern& p_refPattern, size_t p_count)
+		void FillMemPattern(T* p_ptrDestination, const Pattern& p_refPattern, size_t p_size)
 		{
 			u8* l_destination_bytes = REINTERPRET_CAST(u8*, p_ptrDestination);
 			const u8* l_pattern_bytes = REINTERPRET_CAST(const u8*, &p_refPattern);
 			size_t l_pattern_size = sizeof(Pattern);
-			size_t l_total_size = p_count * sizeof(T);
+			size_t l_total_size = p_size;
 
 			for (size_t i = 0; i < l_total_size; i += l_pattern_size)
 			{
@@ -96,9 +96,9 @@ namespace sinter::core::memory
 		}
 
 		template<typename T, typename Callback>
-		void FillMemCallback(T* p_ptrDestination, size_t p_count, Callback p_callback)
+		void FillMemCallback(T* p_ptrDestination, size_t p_size, Callback p_callback)
 		{
-			for (size_t i = 0; i < p_count; ++i)
+			for (size_t i = 0; i < p_size; ++i)
 			{
 				p_ptrDestination[i] = p_callback(i);
 			}

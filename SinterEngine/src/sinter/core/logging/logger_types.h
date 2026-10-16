@@ -1,6 +1,7 @@
 #pragma once
 
 // Internal
+#include <sinter/core/defines.h>
 #include <sinter/core/typedefs.h>
 
 // External
@@ -20,5 +21,10 @@ namespace sinter::core
 		Critical	= spdlog::level::critical,
 		Off			= spdlog::level::off
 	};
+
+	INLINE spdlog::level::level_enum LogLevelToSpdlogLevel(LogLevel level)
+	{
+		return STATIC_CAST(spdlog::level::level_enum, level);
+	}
 
 } // namespace sinter::core

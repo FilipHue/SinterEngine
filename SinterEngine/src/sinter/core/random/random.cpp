@@ -1,6 +1,8 @@
-// random.cpp
 #include "sepch.h"
 #include "random.h"
+
+// Internal
+#include <sinter/core/types/string.h>
 
 namespace sinter::core
 {
@@ -138,6 +140,33 @@ namespace sinter::core
 	f64 Random::GetNormal64(f64 p_mean, f64 p_stddev)
 	{
 		return p_mean + p_stddev * GetState().normal64_dist(GetState().engine);
+	}
+
+	SEString Random::GetStringFromCharset(u32 p_length, const char* p_charset)
+	{
+		SEString l_str;
+
+		for (u32 i = 0; i < p_length; ++i)
+		{
+			u32 l_index = GetUInt32InRange(0, STATIC_CAST(u32, std::strlen(p_charset) - 1));
+			l_str += p_charset[l_index];
+		}
+
+		return l_str;
+	}
+
+	SEString Random::GetStringInRange(u32 p_minLength, u32 p_maxLength, const char* p_charset)
+	{
+		SEString l_str;
+
+		u32 l_length = GetUInt32InRange(p_minLength, p_maxLength);
+		for (u32 i = 0; i < l_length; ++i)
+		{
+			u32 l_index = GetUInt32InRange(0, STATIC_CAST(u32, std::strlen(p_charset) - 1));
+			l_str += p_charset[l_index];
+		}
+
+		return l_str;
 	}
 
 	// ============================================================================

@@ -20,20 +20,20 @@ namespace sinter::core
 		static void LogAssert(const char* p_condition, const char* p_message, const char* p_file, int p_line);
 		static void LogAssertVarArgs(const char* p_condition, const char* p_file, int p_line, const char* p_format, ...);
 
-		static void SetGlobalLoggerLevel(LogLevel p_level) { spdlog::set_level(static_cast<spdlog::level::level_enum>(p_level)); }
-		static void SetGlobalLoggerFlushLevel(LogLevel p_level) { spdlog::flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetGlobalLoggerLevel(LogLevel p_level) { spdlog::set_level(LogLevelToSpdlogLevel(p_level)); }
+		static void SetGlobalLoggerFlushLevel(LogLevel p_level) { spdlog::flush_on(LogLevelToSpdlogLevel(p_level)); }
 
-		static void SetClientLoggerLevel(LogLevel p_level) { s_clientLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
-		static void SetClientLoggerFlushLevel(LogLevel p_level) { s_clientLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetClientLoggerLevel(LogLevel p_level) { s_clientLogger->set_level(LogLevelToSpdlogLevel(p_level)); }
+		static void SetClientLoggerFlushLevel(LogLevel p_level) { s_clientLogger->flush_on(LogLevelToSpdlogLevel(p_level)); }
 
-		static void SetCoreLoggerLevel(LogLevel p_level) { s_coreLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
-		static void SetCoreLoggerFlushLevel(LogLevel p_level) { s_coreLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetCoreLoggerLevel(LogLevel p_level) { s_coreLogger->set_level(LogLevelToSpdlogLevel(p_level)); }
+		static void SetCoreLoggerFlushLevel(LogLevel p_level) { s_coreLogger->flush_on(LogLevelToSpdlogLevel(p_level)); }
 
-		static void SetEngineLoggerLevel(LogLevel p_level) { s_engineLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
-		static void SetEngineLoggerFlushLevel(LogLevel p_level) { s_engineLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetEngineLoggerLevel(LogLevel p_level) { s_engineLogger->set_level(LogLevelToSpdlogLevel(p_level)); }
+		static void SetEngineLoggerFlushLevel(LogLevel p_level) { s_engineLogger->flush_on(LogLevelToSpdlogLevel(p_level)); }
 
-		static void SetPlatformLoggerLevel(LogLevel p_level) { s_platformLogger->set_level(static_cast<spdlog::level::level_enum>(p_level)); }
-		static void SetPlatformLoggerFlushLevel(LogLevel p_level) { s_platformLogger->flush_on(static_cast<spdlog::level::level_enum>(p_level)); }
+		static void SetPlatformLoggerLevel(LogLevel p_level) { s_platformLogger->set_level(LogLevelToSpdlogLevel(p_level)); }
+		static void SetPlatformLoggerFlushLevel(LogLevel p_level) { s_platformLogger->flush_on(LogLevelToSpdlogLevel(p_level)); }
 
 		static SharedPtr<spdlog::logger>& GetFunctionTraceLogger() { return s_functionTraceLogger; }
 		static SharedPtr<spdlog::logger>& GetAssertLogger() { return s_assertLogger; }
@@ -58,6 +58,8 @@ namespace sinter::core
 	};
 
 } // namespace sinter::core
+
+#if not defined(SINTER_UT)
 
 #define SE_FUNCTION_TRACE_ENTER()    ::sinter::core::Logger::GetFunctionTraceLogger()->trace("ENTER: {}", __FUNC__)
 #define SE_FUNCTION_TRACE_EXIT()     ::sinter::core::Logger::GetFunctionTraceLogger()->trace("EXIT: {}", __FUNC__)
@@ -92,8 +94,44 @@ namespace sinter::core
 #define SE_ENGINE_DEBUG(...)    ::sinter::core::Logger::GetEngineLogger()->debug(__VA_ARGS__)
 #define SE_PLATFORM_DEBUG(...)    ::sinter::core::Logger::GetPlatformLogger()->debug(__VA_ARGS__)
 #else
-#define SE_CLIENT_DEBUG(...)	NO_OP
-#define SE_CORE_DEBUG(...)		NO_OP
-#define SE_ENGINE_DEBUG(...)	NO_OP
-#define SE_PLATFORM_DEBUG(...)	NO_OP
-#endif
+#define SE_CLIENT_DEBUG(...)
+#define SE_CORE_DEBUG(...)
+#define SE_ENGINE_DEBUG(...)
+#define SE_PLATFORM_DEBUG(...)
+#endif // defined(SINTER_DEBUG)
+
+#else
+
+#define SE_FUNCTION_TRACE_ENTER()
+#define SE_FUNCTION_TRACE_EXIT()
+
+#define SE_CLIENT_TRACE(...)
+#define SE_CLIENT_INFO(...)
+#define SE_CLIENT_WARN(...)
+#define SE_CLIENT_ERROR(...)
+#define SE_CLIENT_CRITICAL(...)
+
+#define SE_CORE_TRACE(...)
+#define SE_CORE_INFO(...)
+#define SE_CORE_WARN(...)
+#define SE_CORE_ERROR(...)
+#define SE_CORE_CRITICAL(...)
+
+#define SE_ENGINE_TRACE(...)
+#define SE_ENGINE_INFO(...)
+#define SE_ENGINE_WARN(...)
+#define SE_ENGINE_ERROR(...)
+#define SE_ENGINE_CRITICAL(...)
+
+#define SE_PLATFORM_TRACE(...)
+#define SE_PLATFORM_INFO(...)
+#define SE_PLATFORM_WARN(...)
+#define SE_PLATFORM_ERROR(...)
+#define SE_PLATFORM_CRITICAL(...)
+
+#define SE_CLIENT_DEBUG(...)
+#define SE_CORE_DEBUG(...)
+#define SE_ENGINE_DEBUG(...)
+#define SE_PLATFORM_DEBUG(...)
+
+#endif // defined(SINTER_UT)

@@ -4,9 +4,13 @@
 #include <sinter/core/assert.h>
 #include <sinter/core/defines.h>
 #include <sinter/core/typedefs.h>
+#include <sinter/core/types/string.h>
 
 namespace sinter::core
 {
+
+	constexpr const char* SE_RANDOM_DEFAULT_CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 	class Random
 	{
 	public:
@@ -28,6 +32,9 @@ namespace sinter::core
 		static b8 GetBool(f32 p_probability);
 		static f32 GetNormal32(f32 p_mean, f32 p_stddev);
 		static f64 GetNormal64(f64 p_mean, f64 p_stddev);
+
+		static SEString GetStringFromCharset(u32 p_length, const char* p_charset = SE_RANDOM_DEFAULT_CHARSET);
+		static SEString GetStringInRange(u32 p_minLength, u32 p_maxLength, const char* p_charset = SE_RANDOM_DEFAULT_CHARSET);
 
 		template <typename Container>
 		static typename Container::value_type Choice(const Container& p_refContainer)
