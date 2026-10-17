@@ -7,7 +7,9 @@
 
 #include <sinter/engine/event/event_types.h>
 
+#if defined (SINTER_PLATFORM_WINDOWS)
 #include <sinter/platform/windows/glfw_window.h>
+#endif
 
 namespace sinter::engine
 {
@@ -24,16 +26,19 @@ namespace sinter::engine
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
+#if defined(SINTER_WPI_GLFW) && not defined(SINTER_WPI_SDL) && not defined(SINTER_WPI_NATIVE)
 		m_integrationType = WindowSystemIntegrationType::GLFW;
-
-		if (m_integrationType == WindowSystemIntegrationType::GLFW)
+#elif defined(SINTER_WPI_SDL) && not defined(SINTER_WPI_GLFW) && not defined(SINTER_WPI_NATIVE)
+		m_integrationType = WindowSystemIntegrationType::SDL;
+#elif defined(SINTER_WPI_NATIVE) && not defined(SINTER_WPI_GLFW) && not defined(SINTER_WPI_SDL)
+		m_integrationType = WindowSystemIntegrationType::Native;
+#else
+		m_integrationType = WindowSystemIntegrationType::None;
+#endif
+		if (!WPI_Init())
 		{
-			u32 l_result = glfwInit();
-			if (!l_result)
-			{
-				SE_ENGINE_CRITICAL("Failed to initialize GLFW");
-				EXIT(EXIT_FAILURE);
-			}
+			SE_ENGINE_CRITICAL("Failed to initialize Window Platform Integration");
+			EXIT(EXIT_FAILURE);
 		}
 
 		SE_ENGINE_DEBUG("\tWindow system initialized successfully!");
@@ -53,10 +58,7 @@ namespace sinter::engine
 
 		m_windows.clear();
 
-		if (m_integrationType == WindowSystemIntegrationType::GLFW)
-		{
-			glfwTerminate();
-		}
+		WPI_Shutdown();
 
 		SE_ENGINE_DEBUG("\tWindow system shut down successfully!");
 
@@ -77,9 +79,10 @@ namespace sinter::engine
 			SE_ENGINE_CRITICAL("Native window system integration is not yet implemented.");
 			break;
 		case sinter::engine::WindowSystemIntegrationType::GLFW:
-#if defined (SINTER_PLATFORM_WINDOWS)
 			window = platform::GlfwWindow::Create(p_refConfiguration);
-#endif
+			break;
+		case sinter::engine::WindowSystemIntegrationType::SDL:
+			SE_ENGINE_CRITICAL("SDL window system integration is not yet implemented.");
 			break;
 		default:
 			SE_ENGINE_CRITICAL("Unknown window system integration type: {}", STATIC_CAST(u32, m_integrationType));
@@ -151,12 +154,12 @@ namespace sinter::engine
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-	void WindowSystem::PollEvents()
+	void WindowSystem::Update()
 	{
 		SE_FUNCTION_TRACE_ENTER();
 		for (auto& [rid, slot] : m_windows)
 		{
-			slot.window->PollEvents();
+			slot.window->Update();
 		}
 		SE_FUNCTION_TRACE_EXIT();
 	}

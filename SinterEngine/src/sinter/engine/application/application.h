@@ -50,7 +50,7 @@ namespace sinter::engine
 
 		b8 OnFatalError(EventContext& p_refEvent);
 
-	private:
+	protected:
 		ApplicationConfiguration m_configuration;
 		ApplicationState m_state;
 

@@ -79,10 +79,14 @@ namespace sinter::engine
 			if (!m_application->IsSuspended())
 			{
 				m_application->OnProcessUpdate();
+
+				m_application->OnRenderBegin();
+				m_application->OnRenderUpdate();
+				m_application->OnRenderEnd();
 			}
 
 			m_eventSystem->DispatchEvents();
-			m_windowSystem->PollEvents();
+			m_windowSystem->Update();
 		}
 
 		m_application->Teardown();

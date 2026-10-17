@@ -1,5 +1,7 @@
 #include "playground.h"
 
+#include <glad/gl.h>
+
 PlaygroundApplication::PlaygroundApplication(const ApplicationConfiguration& p_refConfiguration) : Application(p_refConfiguration)
 {
 	NO_OP;
@@ -23,9 +25,6 @@ void PlaygroundApplication::Init()
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonPressed, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonPressed));
 	EventSystem::GetInstance().Subscribe(EventType::MouseButtonReleased, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseButtonReleased));
 	EventSystem::GetInstance().Subscribe(EventType::MouseScrolled, BIND_EVENTCALLBACK(PlaygroundApplication::OnMouseScrolled));
-	
-	//Engine::GetSystem<ErrorSystem>()->Log(ErrorRecord(ErrorSeverity::Info, ErrorCategory::General, ErrorCode::Unknown, "PlaygroundApplication initialized.", "PlaygroundApplication::Init"));
-	Engine::GetSystem<FileSystem>()->LoadFile("hello.txt");
 }
 
 void PlaygroundApplication::Shutdown()
@@ -34,12 +33,13 @@ void PlaygroundApplication::Shutdown()
 
 void PlaygroundApplication::OnProcessUpdate()
 {
-	//Engine::GetSystem<ErrorSystem>()->Log(ErrorRecord(ErrorSeverity::Critical, ErrorCategory::General, ErrorCode::Unknown, "This is a test critical message.", "PlaygroundApplication::OnProcessUpdate"));
-	//SE_CLIENT_INFO("OnProcessUpdate called. Application is running: {}, Application is suspended: {}", IsRunning(), IsSuspended());
 }
 
 void PlaygroundApplication::OnRenderBegin()
 {
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glViewport(0, 0, m_mainWindow->GetWidth(), m_mainWindow->GetHeight());
 }
 
 void PlaygroundApplication::OnRenderUpdate()
@@ -62,7 +62,6 @@ b8 PlaygroundApplication::OnWindowResize(EventContext& p_refEvent)
 
 b8 PlaygroundApplication::OnWindowClose(EventContext& event)
 {
-	SE_CLIENT_INFO("WindowCloseEvent received for window RID: {}", STATIC_CAST(u64, event.window_rid));
 	Quit();
 	return true;
 }
@@ -97,6 +96,7 @@ b8 PlaygroundApplication::OnWindowContentScale(EventContext& p_refEvent)
 
 b8 PlaygroundApplication::OnKeyPressed(EventContext& p_refEvent)
 {
+	SE_CLIENT_INFO("Key Pressed: {}", (u32)p_refEvent.data.key.keycode);
 	if (p_refEvent.data.key.keycode == KeyCode::Escape)
 	{
 		Quit();

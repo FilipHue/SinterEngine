@@ -9,6 +9,9 @@
 namespace sinter::engine
 {
 
+	extern b8 WPI_Init();
+	extern void WPI_Shutdown();
+
 	struct EventContext;
 	class WindowSystem;
 
@@ -22,7 +25,7 @@ namespace sinter::engine
 
 		virtual void Init(const WindowConfiguration& p_configuration) = 0;
 		virtual void Shutdown() = 0;
-		virtual void PollEvents() = 0;
+		virtual void Update() = 0;
 
 		virtual void SetTitle(const char* p_title) = 0;
 		virtual void SetSize(u32 p_width, u32 p_height) = 0;
@@ -84,7 +87,7 @@ namespace sinter::engine
 		void SetWindowPosition(WindowRID p_rid, i32 p_x, i32 p_y);
 		void SetWindowCursorMode(WindowRID p_rid, CursorModeFlags p_mode);
 
-		void PollEvents();
+		void Update();
 
 	private:
 		DEFAULT_CTOR_AND_DTOR(WindowSystem);

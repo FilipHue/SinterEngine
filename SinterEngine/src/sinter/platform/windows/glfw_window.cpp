@@ -6,11 +6,55 @@
 
 #include <sinter/engine/event/event.h>
 #include <sinter/engine/input/input.h>
+#include <sinter/engine/window/window.h>
+
+// External
+#if defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN) && not defined(SINTER_API_DIRECTX) // OpenGL support
+// GLAD must be included before GLFW to ensure that the OpenGL function pointers are loaded correctly
+// If GLFW_INCLUDE_NONE is defined, GLFW will not include any OpenGL headers and GLAD can be included without conflicts
+#include <glad/gl.h>
+#elif defined(SINTER_API_VULKAN) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_DIRECTX) // Vulkan support
+#error "Vulkan support is not implemented yet."
+#elif defined(SINTER_API_DIRECTX) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN) // DirectX support
+#error "DirectX support is not implemented yet."
+#else
+#error "Unsupported graphics API. Please define one of SINTER_API_OPENGL, SINTER_API_VULKAN, or SINTER_API_DIRECTX."
+#endif
+
+#include <Windows.h>
+#if not defined(GLFW_INCLUDE_NONE)
+#define GLFW_INCLUDE_NONE
+#endif // GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
+
+sinter::b8 sinter::engine::WPI_Init()
+{
+	SE_FUNCTION_TRACE_ENTER();
+	b8 l_result = glfwInit();
+	SE_FUNCTION_TRACE_EXIT();
+	return l_result;
+}
+
+void sinter::engine::WPI_Shutdown()
+{
+	SE_FUNCTION_TRACE_ENTER();
+	glfwTerminate();
+	SE_FUNCTION_TRACE_EXIT();;
+}
 
 namespace sinter::platform
 {
 
 	using namespace sinter::core;
+
+	struct WindowInternalState
+	{
+		HINSTANCE instance_handle;
+		HWND window_handle;
+		WindowRID window_rid;
+	};
 
 	void GlfwWindow::Init(const WindowConfiguration& p_configuration)
 	{
@@ -29,7 +73,7 @@ namespace sinter::platform
 		m_state.isRunning = true;
 		m_state.isSuspended = false;
 		m_state.isFocused = true;
-		m_state.isMinimized = false;
+		m_state.isMinimized = HAS_FLAG(p_configuration.windowMode, WindowModeFlags::Borderless);
 		m_state.isFullscreen = HAS_FLAG(p_configuration.windowMode, WindowModeFlags::Fullscreen);
 
 		m_state.isCursorLocked = HAS_FLAG(p_configuration.cursorMode, CursorModeFlags::Disabled);
@@ -51,6 +95,26 @@ namespace sinter::platform
 			SE_FUNCTION_TRACE_EXIT();
 			EXIT(EXIT_FAILURE);
 		}
+
+#if defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN) && not defined(SINTER_API_DIRECTX)
+		glfwMakeContextCurrent(m_handle);
+		glfwSwapInterval(HAS_FLAG(p_configuration.flags, WindowCreationFlags::VSync) ? 1 : 0);
+
+		i32 version = gladLoadGL(glfwGetProcAddress);
+		if (version == 0)
+		{
+			SE_PLATFORM_CRITICAL("Failed to initialize OpenGL context");
+			glfwTerminate();
+			SE_FUNCTION_TRACE_EXIT();
+			EXIT(EXIT_FAILURE);
+		}
+#elif defined(SINTER_API_VULKAN) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_DIRECTX)
+#error "Unsupported graphics API. Vulkan support is not implemented yet."
+#elif defined(SINTER_API_DIRECTX) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN)
+#error "Unsupported graphics API. DirectX support is not implemented yet."
+#else
+#error "Unsupported graphics API. Please define one of SINTER_API_OPENGL, SINTER_API_VULKAN, or SINTER_API_DIRECTX."
+#endif
 
 		SetWindowCallbacks();
 		SetKeyboardCallbacks();
@@ -100,11 +164,14 @@ namespace sinter::platform
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-	void GlfwWindow::PollEvents()
+	void GlfwWindow::Update()
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
 		glfwPollEvents();
+#if defined(SINTER_API_OPENGL)
+		glfwSwapBuffers(m_handle);
+#endif
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -232,7 +299,17 @@ namespace sinter::platform
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
+#if defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN) && not defined(SINTER_API_DIRECTX)
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#elif defined(SINTER_API_VULKAN) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_DIRECTX)
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+#elif defined(SINTER_API_DIRECTX) && not defined(SINTER_API_OPENGL) && not defined(SINTER_API_VULKAN)
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+#else
+#error "Unsupported graphics API. Please define one of SINTER_API_OPENGL, SINTER_API_VULKAN, or SINTER_API_DIRECTX."
+#endif
 
 		glfwWindowHint(GLFW_RESIZABLE, HAS_FLAG(m_configuration.flags, WindowCreationFlags::Resizable) ? GLFW_TRUE : GLFW_FALSE);
 		glfwWindowHint(GLFW_DECORATED, HAS_FLAG(m_configuration.flags, WindowCreationFlags::Decorated) ? GLFW_TRUE : GLFW_FALSE);

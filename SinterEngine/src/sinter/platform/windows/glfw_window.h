@@ -3,12 +3,10 @@
 // Internal
 #include <sinter/engine/window/window.h>
 
-// External
-#include <GLFW/glfw3.h>
-#if defined(SINTER_PLATFORM_WINDOWS)
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-#endif // SINTER_PLATFORM_WINDOWS
+// Forward declaration of GLFW types to avoid exposing GLFW headers in the public interface of GlfwWindow
+struct GLFWwindow;
+struct GLFWmonitor;
+struct GLFWvidmode;
 
 namespace sinter::platform
 {
@@ -24,7 +22,7 @@ namespace sinter::platform
 		void Init(const WindowConfiguration& p_configuration) override;
 		void Shutdown() override;
 
-		void PollEvents() override;
+		void Update() override;
 
 		void SetTitle(const char* p_title) override;
 		void SetSize(u32 p_width, u32 p_height) override;
@@ -48,13 +46,6 @@ namespace sinter::platform
 		void SetMouseCallbacks();
 
 	private:
-		struct WindowInternalState
-		{
-			HINSTANCE instance_handle;
-			HWND window_handle;
-			WindowRID window_rid;
-		};
-
 		void* m_userData = nullptr;
 
 		GLFWwindow* m_handle{ nullptr };

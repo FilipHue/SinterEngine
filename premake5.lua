@@ -17,8 +17,7 @@ project "SinterEngine"
     kind "StaticLib"
     language "C++"
 
-    -- Link the runtime library dynamically (DLL) instead of statically linking it into the executable.
-    staticruntime "Off"
+    staticruntime "On"
 
     targetdir ("%{wks.location}/bin/" .. OutputDir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. OutputDir .. "/%{prj.name}")
@@ -29,20 +28,44 @@ project "SinterEngine"
     files 
     {
         "%{prj.name}/src/**.h",
-        "%{prj.name}/src/**.cpp"
+        "%{prj.name}/src/**.c**",
+
+        "%{prj.name}/dependencies/GLAD/include/**.h",
+        "%{prj.name}/dependencies/GLAD/src/**.c**"
     }
 
-    includedirs 
+    includedirs
     {
         "%{prj.name}/src",
+        "%{IncludeDirs.GLAD}",
         "%{IncludeDirs.GLFW}",
-        "%{IncludeDirs.SPDLOG}"
+        "%{IncludeDirs.SPDLOG}",
+        "%{IncludeDirs.YAML}"
     }
+
+    links
+	{
+		"opengl32.lib",
+	}
+
+	linkoptions
+	{ 
+		"/NODEFAULTLIB:MSVCRT.lib"
+	}
+
+    defines 
+    {
+        "SINTER_WPI_GLFW",
+        "SINTER_API_OPENGL"
+    }
+
+    filter "files:**.c"
+        enablepch "Off"
 
     filter "system:windows"
         cppdialect "C++23"
         cdialect "C23"
-        staticruntime "Off"
+        staticruntime "On"
         systemversion "latest"
 
         buildoptions { "/utf-8" , "/Zc:__cplusplus" }
@@ -77,8 +100,7 @@ project "Playground"
     kind "ConsoleApp"
     language "C++"
 
-    -- Link the runtime library dynamically (DLL) instead of statically linking it into the executable.
-    staticruntime "Off"
+    staticruntime "On"
 
     targetdir ("%{wks.location}/bin/" .. OutputDir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. OutputDir .. "/%{prj.name}")
@@ -92,20 +114,28 @@ project "Playground"
     includedirs 
     { 
         "SinterEngine/src",
+        "SinterEngine/dependencies/GLAD/include",
         "SinterEngine/dependencies/GLFW/include",
-        "SinterEngine/dependencies/SPDLOG/include"
+        "SinterEngine/dependencies/SPDLOG/include",
+        "SinterEngine/dependencies/YAML/include"
     }
 
     libdirs
     {
         "%{LibraryDirs.GLFW}",
-        "%{LibraryDirs.SPDLOG}"
+        "%{LibraryDirs.SPDLOG}",
+        "%{LibraryDirs.YAML}"
     }
 
     links
     { 
         "SinterEngine"
     }
+
+    linkoptions
+	{ 
+		"/NODEFAULTLIB:MSVCRT.lib"
+	}
 
     dependson
     {
@@ -115,7 +145,7 @@ project "Playground"
     filter "system:windows"
         cppdialect "C++23"
         cdialect "C23"
-        staticruntime "Off"
+        staticruntime "On"
         systemversion "latest"
 
         buildoptions { "/utf-8", "/Zc:__cplusplus" }
@@ -139,7 +169,8 @@ project "Playground"
         links
         {
             "%{Libraries.GLFWD}",
-            "%{Libraries.SPDLOGD}"
+            "%{Libraries.SPDLOGD}",
+            "%{Libraries.YAMLD}",
         }
 
     filter "configurations:Release"
@@ -154,5 +185,6 @@ project "Playground"
         links
         {
             "%{Libraries.GLFWR}",
-            "%{Libraries.SPDLOGR}"
+            "%{Libraries.SPDLOGR}",
+            "%{Libraries.YAMLR}"
         }

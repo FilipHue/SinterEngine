@@ -59,11 +59,11 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLAD\include;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;..\SinterEngine\dependencies\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp23</LanguageStandard>
@@ -73,8 +73,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Debug\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Debug\spdlogd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Debug;..\SinterEngine\dependencies\SPDLOG\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Debug\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Debug\spdlogd.lib;..\SinterEngine\dependencies\YAML\lib\Debug\yaml-cppd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Debug;..\SinterEngine\dependencies\SPDLOG\lib\Debug;..\SinterEngine\dependencies\YAML\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ProjectReference>
     </ProjectReference>
@@ -84,13 +85,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SinterEngine\src;..\SinterEngine\dependencies\GLAD\include;..\SinterEngine\dependencies\GLFW\include;..\SinterEngine\dependencies\SPDLOG\include;..\SinterEngine\dependencies\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp23</LanguageStandard>
@@ -101,8 +102,9 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Release\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Release\spdlog.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Release;..\SinterEngine\dependencies\SPDLOG\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\SinterEngine\dependencies\GLFW\lib\Release\glfw3_mt.lib;..\SinterEngine\dependencies\SPDLOG\lib\Release\spdlog.lib;..\SinterEngine\dependencies\YAML\lib\Release\yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\SinterEngine\dependencies\GLFW\lib\Release;..\SinterEngine\dependencies\SPDLOG\lib\Release;..\SinterEngine\dependencies\YAML\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ProjectReference>
     </ProjectReference>

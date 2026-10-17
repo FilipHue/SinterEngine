@@ -12,7 +12,10 @@ namespace sinter::engine
 	{
 		None		= 0,
 		Native		= 1,
-		GLFW		= 2
+		GLFW		= 2,
+		SDL         = 3,
+
+		Count
 	};
 
 	enum class CursorModeFlags : u32
@@ -20,7 +23,9 @@ namespace sinter::engine
 		None		= 0,
 		Normal		= 1 << 0,
 		Hidden		= 1 << 1,
-		Disabled	= 1 << 2
+		Disabled	= 1 << 2,
+
+		Count
 	};
 
 	enum class WindowModeFlags : u32
@@ -28,7 +33,9 @@ namespace sinter::engine
 		None		= 0,
 		Windowed	= 1 << 0,
 		Borderless	= 1 << 1,
-		Fullscreen	= 1 << 2
+		Fullscreen	= 1 << 2,
+
+		Count
 	};
 
 	enum class WindowCreationFlags : u32
@@ -36,7 +43,9 @@ namespace sinter::engine
 		None		= 0,
 		Resizable	= 1 << 0,
 		Decorated	= 1 << 1,
-		VSync		= 1 << 2
+		VSync		= 1 << 2,
+
+		Count
 	};
 
 	DEFINE_ENUM_BITWISE_OPERATORS(CursorModeFlags);

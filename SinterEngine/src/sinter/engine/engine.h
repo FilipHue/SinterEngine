@@ -11,7 +11,6 @@
 #include <sinter/engine/event/event.h>
 #include <sinter/engine/input/input.h>
 #include <sinter/engine/window/window.h>
-
 namespace sinter::engine
 {
 

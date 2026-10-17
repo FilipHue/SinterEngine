@@ -57,12 +57,12 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;dependencies\GLFW\include;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SINTER_WPI_GLFW;SINTER_API_OPENGL;SINTER_PLATFORM_WINDOWS;SINTER_DEBUG;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;dependencies\GLAD\include;dependencies\GLFW\include;dependencies\SPDLOG\include;dependencies\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp23</LanguageStandard>
@@ -73,6 +73,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
     <ProjectReference>
     </ProjectReference>
   </ItemDefinitionGroup>
@@ -81,14 +85,14 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;dependencies\GLFW\include;dependencies\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SINTER_WPI_GLFW;SINTER_API_OPENGL;SINTER_PLATFORM_WINDOWS;SINTER_RELEASE;SINTER_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;dependencies\GLAD\include;dependencies\GLFW\include;dependencies\SPDLOG\include;dependencies\YAML\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/utf-8 /Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp23</LanguageStandard>
@@ -100,10 +104,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRT.lib %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
     <ProjectReference>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\GLAD\include\KHR\khrplatform.h" />
+    <ClInclude Include="dependencies\GLAD\include\glad\gl.h" />
+    <ClInclude Include="dependencies\GLFW\include\GLFW\glfw3.h" />
+    <ClInclude Include="dependencies\GLFW\include\GLFW\glfw3native.h" />
     <ClInclude Include="src\sepch.h" />
     <ClInclude Include="src\sinter\core\api.h" />
     <ClInclude Include="src\sinter\core\assert.h" />
@@ -142,10 +154,14 @@
     <ClInclude Include="src\sinter\engine\input\input_types.h" />
     <ClInclude Include="src\sinter\engine\window\window.h" />
     <ClInclude Include="src\sinter\engine\window\window_types.h" />
+    <ClInclude Include="src\sinter\graphics\graphics_context.h" />
     <ClInclude Include="src\sinter\platform\windows\glfw_window.h" />
     <ClInclude Include="src\sinter\sinter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dependencies\GLAD\src\gl.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\sepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -160,6 +176,7 @@
     <ClCompile Include="src\sinter\engine\event\event.cpp" />
     <ClCompile Include="src\sinter\engine\input\input.cpp" />
     <ClCompile Include="src\sinter\engine\window\window.cpp" />
+    <ClCompile Include="src\sinter\graphics\graphics_context.cpp" />
     <ClCompile Include="src\sinter\platform\windows\glfw_window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

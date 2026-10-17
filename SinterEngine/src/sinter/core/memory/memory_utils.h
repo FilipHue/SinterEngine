@@ -31,7 +31,7 @@ namespace sinter
 	template <typename T>
 	T* SafeMalloc(size_t p_size)
 	{
-		T* l_ptr = STATIC_CAST(T*, malloc(p_size));
+		T* l_ptr = STATIC_CAST(T*, std::malloc(p_size));
 		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
 		return l_ptr;
 	}
@@ -39,7 +39,7 @@ namespace sinter
 	template <typename T>
 	T* SafeCalloc(size_t p_num, size_t p_size)
 	{
-		T* l_ptr = STATIC_CAST(T*, calloc(p_num, p_size));
+		T* l_ptr = STATIC_CAST(T*, std::calloc(p_num, p_size));
 		SE_ASSERT(l_ptr != nullptr, "Memory allocation failed.");
 		return l_ptr;
 	}
@@ -47,7 +47,7 @@ namespace sinter
 	template <typename T>
 	T* SafeRealloc(T* p_ptrType, size_t p_newSize)
 	{
-		T* l_ptr = STATIC_CAST(T*, realloc(p_ptrType, p_newSize));
+		T* l_ptr = STATIC_CAST(T*, std::realloc(p_ptrType, p_newSize));
 		SE_ASSERT(l_ptr != nullptr, "Memory reallocation failed.");
 		return l_ptr;
 	}
