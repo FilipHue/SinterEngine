@@ -35,7 +35,7 @@ namespace sinter::engine
 #else
 		m_integrationType = WindowSystemIntegrationType::None;
 #endif
-		if (!WPI_Init())
+		if (!InternalInit())
 		{
 			SE_ENGINE_CRITICAL("Failed to initialize Window Platform Integration");
 			EXIT(EXIT_FAILURE);
@@ -58,14 +58,14 @@ namespace sinter::engine
 
 		m_windows.clear();
 
-		WPI_Shutdown();
+		InternalShutdown();
 
 		SE_ENGINE_DEBUG("\tWindow system shut down successfully!");
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
 
-	Window* WindowSystem::Create(const WindowConfiguration& p_refConfiguration)
+	Window* WindowSystem::Create(const WindowConfiguration* p_ptrConfiguration)
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
@@ -79,7 +79,7 @@ namespace sinter::engine
 			SE_ENGINE_CRITICAL("Native window system integration is not yet implemented.");
 			break;
 		case sinter::engine::WindowSystemIntegrationType::GLFW:
-			window = platform::GlfwWindow::Create(p_refConfiguration);
+			window = platform::GlfwWindow::Create(p_ptrConfiguration);
 			break;
 		case sinter::engine::WindowSystemIntegrationType::SDL:
 			SE_ENGINE_CRITICAL("SDL window system integration is not yet implemented.");
@@ -112,6 +112,17 @@ namespace sinter::engine
 		m_windows.erase(p_rid);
 
 		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	Window* WindowSystem::GetWindow(WindowRID p_rid)
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		SE_ASSERT_MSG(m_windows.find(p_rid) != m_windows.end(), "Window with RID %s does not exist.", p_rid.ToString().c_str());
+		Window* window = m_windows[p_rid].window;
+
+		SE_FUNCTION_TRACE_EXIT();
+		return window;
 	}
 
 	void WindowSystem::SetWindowTitle(WindowRID p_rid, const char* p_title)
@@ -157,10 +168,13 @@ namespace sinter::engine
 	void WindowSystem::Update()
 	{
 		SE_FUNCTION_TRACE_ENTER();
+
+		InternalUpdate();
 		for (auto& [rid, slot] : m_windows)
 		{
 			slot.window->Update();
 		}
+
 		SE_FUNCTION_TRACE_EXIT();
 	}
 

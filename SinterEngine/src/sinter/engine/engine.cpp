@@ -23,38 +23,12 @@ namespace sinter::engine
 
 		m_configuration = std::move(p_configuration);
 
-		SE_ENGINE_DEBUG("Initializing {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
-
-		m_errorSystem = &ErrorSystem::GetInstance();
-		m_errorSystem->Init();
-
-		m_fileSystem = &FileSystem::GetInstance();
-		m_fileSystem->Init();
-		m_fileSystem->SetRootDirectory(m_configuration.currentWorkingDirectory);
-
-		m_memorySystem = &MemorySystem::GetInstance();
-		m_memorySystem->Init();
-
-		m_eventSystem = &EventSystem::GetInstance();
-		m_eventSystem->Init();
-
-		m_inputSystem = &InputSystem::GetInstance();
-		m_inputSystem->Init();
-
-		m_windowSystem = &WindowSystem::GetInstance();
-		m_windowSystem->Init();
-
-		File l_errorLogFile{ "error_log.txt" };
-		m_errorSystem->SetLogFile(std::move(l_errorLogFile));
-
-		ErrorSystem::OnFatalErrorCallbackFn onFatalErrorCallback = [&](ErrorRecord record)
-		{
-			EventContext fatalErrorEvent = EventContext::EngineFatalError(std::move(record));
-			m_eventSystem->QueueEvent(fatalErrorEvent);
-		};
-		m_errorSystem->SetOnFatalErrorCallback(onFatalErrorCallback);
-
-		SE_ENGINE_DEBUG("Engine initialized successfully!");
+		InitializeErrorSystem();
+		InitializeFileSystem();
+		InitializeMemorySystem();
+		InitializeEventSystem();
+		InitializeInputSystem();
+		InitializeWindowSystem();
 
 		SE_FUNCTION_TRACE_EXIT();
 	}
@@ -71,6 +45,8 @@ namespace sinter::engine
 
 		m_application = p_ptrApplication;
 		m_application->Setup();
+
+		m_eventSystem->Subscribe(EventType::AppStateChange, BIND_EVENTCALLBACK(m_application->m_mainWindow->OnApplicationStateChange));
 
 		while (m_application->IsRunning())
 		{
@@ -98,22 +74,90 @@ namespace sinter::engine
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		SE_ENGINE_DEBUG("Shutting down {} v{}...", SINTER_VERSION_NAME, SINTER_VERSION_STRING);
-
 		m_windowSystem->Shutdown();
 		m_inputSystem->Shutdown();
 		m_eventSystem->Shutdown();
-		m_memorySystem->Shutdown();
-		m_fileSystem->Shutdown();
-
 		m_errorSystem->DumpErrorTraceToFile();
 		m_errorSystem->Shutdown();
-
-		SE_ENGINE_DEBUG("Engine shut down successfully!");
+		m_fileSystem->Shutdown();
+		m_memorySystem->Shutdown();
 
 		SE_FUNCTION_TRACE_EXIT();
 
 		Logger::Shutdown();
+	}
+
+	void Engine::InitializeErrorSystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		ErrorSystemConfiguration l_errorSystemConfiguration;
+		l_errorSystemConfiguration.logToConsole = true;
+		l_errorSystemConfiguration.logToFile = true;
+		l_errorSystemConfiguration.logFilePath = "errorLogTrace_" + std::to_string(std::time(nullptr)) + ".log";
+
+		m_errorSystem = &ErrorSystem::GetInstance();
+		m_errorSystem->Init(l_errorSystemConfiguration);
+
+		ErrorSystem::OnFatalErrorCallbackFn onFatalErrorCallback = [&](ErrorRecord record)
+		{
+			EventContext fatalErrorEvent = EventContext::EngineFatalError(std::move(record));
+			m_eventSystem->Publish(fatalErrorEvent);
+		};
+		m_errorSystem->SetOnFatalErrorCallback(onFatalErrorCallback);
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	void Engine::InitializeFileSystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		m_fileSystem = &FileSystem::GetInstance();
+		m_fileSystem->Init();
+		m_fileSystem->SetRootDirectory(m_configuration.currentWorkingDirectory);
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	void Engine::InitializeMemorySystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		m_memorySystem = &MemorySystem::GetInstance();
+		m_memorySystem->Init();
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	void Engine::InitializeEventSystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		m_eventSystem = &EventSystem::GetInstance();
+		m_eventSystem->Init();
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	void Engine::InitializeInputSystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		m_inputSystem = &InputSystem::GetInstance();
+		m_inputSystem->Init();
+
+		SE_FUNCTION_TRACE_EXIT();
+	}
+
+	void Engine::InitializeWindowSystem()
+	{
+		SE_FUNCTION_TRACE_ENTER();
+
+		m_windowSystem = &WindowSystem::GetInstance();
+		m_windowSystem->Init();
+
+		SE_FUNCTION_TRACE_EXIT();
 	}
 
 } // namespace sinter::engine

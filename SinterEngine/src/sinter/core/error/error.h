@@ -21,7 +21,7 @@ namespace sinter::core::error
 		using OnFatalErrorCallbackFn = std::function<void(ErrorRecord)>;
 
 	public:
-		void Init();
+		void Init(ErrorSystemConfiguration p_configuration);
 		void Shutdown();
 
 		void SetLogFile(io::File p_logFile) { m_logFile = std::move(p_logFile); }
@@ -39,8 +39,7 @@ namespace sinter::core::error
 		OnFatalErrorCallbackFn m_onFatalErrorCallback;
 		SEVector<ErrorRecord> m_errorTrace;
 
-		b8 m_logToFile;
-		b8 m_logToConsole;
+		ErrorSystemConfiguration m_configuration;
 	};
 
 } // namespace sinter::core::error

@@ -8,6 +8,8 @@
 namespace sinter::engine
 {
 
+	constexpr u16 MAX_PRINT_BUFFER_SIZE = 512;
+
 	enum class WindowSystemIntegrationType : u32
 	{
 		None		= 0,
@@ -67,6 +69,30 @@ namespace sinter::engine
 		WindowCreationFlags flags = WindowCreationFlags::None;
 	};
 
+	INLINE void PrintWindowConfiguration(const WindowConfiguration& p_configuration, char* p_buffer)
+	{
+		snprintf(p_buffer, MAX_PRINT_BUFFER_SIZE,
+			"WindowConfiguration:\n"
+			"  Title: %s\n"
+			"  Width: %u\n"
+			"  Height: %u\n"
+			"  Position: (%d, %d)\n"
+			"  Centered: %s\n"
+			"  CursorMode: %u\n"
+			"  WindowMode: %u\n"
+			"  Flags: %u\n",
+			p_configuration.title,
+			p_configuration.width,
+			p_configuration.height,
+			p_configuration.posX,
+			p_configuration.posY,
+			p_configuration.centered ? "true" : "false",
+			static_cast<u32>(p_configuration.cursorMode),
+			static_cast<u32>(p_configuration.windowMode),
+			static_cast<u32>(p_configuration.flags)
+		);
+	}
+
 	struct WindowState
 	{
 		const char* title = nullptr;
@@ -88,6 +114,37 @@ namespace sinter::engine
 
 		void* userData = nullptr;
 	};
+
+	INLINE void PrintWindowState(const WindowState& p_state, char* p_buffer)
+	{
+		snprintf(p_buffer, MAX_PRINT_BUFFER_SIZE,
+			"WindowState:\n"
+			"  Title: %s\n"
+			"  Width: %u\n"
+			"  Height: %u\n"
+			"  Position: (%d, %d)\n"
+			"  IsRunning: %s\n"
+			"  IsSuspended: %s\n"
+			"  IsFocused: %s\n"
+			"  IsMinimized: %s\n"
+			"  IsFullscreen: %s\n"
+			"  CursorPosition: (%f, %f)\n"
+			"  IsCursorLocked: %s\n",
+			p_state.title,
+			p_state.width,
+			p_state.height,
+			p_state.posX,
+			p_state.posY,
+			p_state.isRunning ? "true" : "false",
+			p_state.isSuspended ? "true" : "false",
+			p_state.isFocused ? "true" : "false",
+			p_state.isMinimized ? "true" : "false",
+			p_state.isFullscreen ? "true" : "false",
+			p_state.cursorX,
+			p_state.cursorY,
+			p_state.isCursorLocked ? "true" : "false"
+		);
+	}
 
 	using WindowRID = core::UUID;
 	INLINE constexpr WindowRID InvalidWindowRID = core::UUID(0);

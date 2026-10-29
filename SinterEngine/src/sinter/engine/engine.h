@@ -43,10 +43,6 @@ namespace sinter::engine
 			{
 				return Engine::GetInstance().m_memorySystem;
 			}
-			else if constexpr (std::is_same_v<T, WindowSystem>)
-			{
-				return Engine::GetInstance().m_windowSystem;
-			}
 			else if constexpr (std::is_same_v<T, EventSystem>)
 			{
 				return Engine::GetInstance().m_eventSystem;
@@ -54,6 +50,10 @@ namespace sinter::engine
 			else if constexpr (std::is_same_v<T, InputSystem>)
 			{
 				return Engine::GetInstance().m_inputSystem;
+			}
+			else if constexpr (std::is_same_v<T, WindowSystem>)
+			{
+				return Engine::GetInstance().m_windowSystem;
 			}
 			else
 			{
@@ -65,6 +65,13 @@ namespace sinter::engine
 	private:
 		DEFAULT_CTOR_AND_DTOR(Engine);
 
+		void InitializeErrorSystem();
+		void InitializeFileSystem();
+		void InitializeMemorySystem();
+		void InitializeEventSystem();
+		void InitializeInputSystem();
+		void InitializeWindowSystem();
+
 	private:
 		EngineConfiguration m_configuration;
 		Application* m_application = nullptr;
@@ -72,9 +79,9 @@ namespace sinter::engine
 		ErrorSystem* m_errorSystem = nullptr;
 		FileSystem* m_fileSystem = nullptr;
 		MemorySystem* m_memorySystem = nullptr;
-		WindowSystem* m_windowSystem = nullptr;	
 		EventSystem* m_eventSystem = nullptr;
 		InputSystem* m_inputSystem = nullptr;
+		WindowSystem* m_windowSystem = nullptr;	
 	};
 
 } // namespace sinter::engine

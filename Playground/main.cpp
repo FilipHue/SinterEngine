@@ -3,7 +3,6 @@
 // Playground
 #include "playground.h"
 
-
 int main(int argc, char** argv)
 {
 	ApplicationConfiguration appConfig;
@@ -16,7 +15,7 @@ int main(int argc, char** argv)
 
 	EngineConfiguration engineConfig;
 
-	engineConfig.currentWorkingDirectory = argv[0];
+	engineConfig.currentWorkingDirectory = std::filesystem::current_path().string();
 
 	Engine::GetInstance().Initialize(engineConfig);
 	Engine::GetInstance().Run(&playgroundApp);

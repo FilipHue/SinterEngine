@@ -18,7 +18,6 @@ namespace sinter::engine
 	void Application::Setup()
 	{
 		WindowConfiguration l_windowConfig;
-
 		l_windowConfig.title = m_configuration.title.c_str();
 		l_windowConfig.width = m_configuration.width;
 		l_windowConfig.height = m_configuration.height;
@@ -27,10 +26,9 @@ namespace sinter::engine
 		l_windowConfig.windowMode = WindowModeFlags::Windowed;
 		l_windowConfig.flags = WindowCreationFlags::Resizable | WindowCreationFlags::Decorated | WindowCreationFlags::VSync;
 
-		m_mainWindow = WindowSystem::GetInstance().Create(l_windowConfig);
+		m_mainWindow = WindowSystem::GetInstance().Create(&l_windowConfig);
 
 		InputSystem::GetInstance().AddWindowInputState(m_mainWindow->GetRID());
-
 		EventSystem::GetInstance().Subscribe(EventType::EngineFatalError, BIND_EVENTCALLBACK(Application::OnFatalError));
 
 		Init();
@@ -53,6 +51,7 @@ namespace sinter::engine
 	{
 		SE_CORE_CRITICAL("Application received a fatal error event. Shutting down...");
 		Quit();
+
 		return true;
 	}
 

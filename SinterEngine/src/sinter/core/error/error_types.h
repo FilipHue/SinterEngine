@@ -98,4 +98,18 @@ namespace sinter::core::error
 		}
 	};
 
+	struct ErrorSystemConfiguration
+	{
+		b8 logToConsole = true;
+		b8 logToFile = false;
+		SEString logFilePath = "";
+
+		DEFAULT_CTOR_AND_DTOR(ErrorSystemConfiguration);
+		ErrorSystemConfiguration(b8 p_logToConsole, b8 p_logToFile, const SEString& p_logFilePath)
+			: logToConsole(p_logToConsole), logToFile(p_logToFile), logFilePath(p_logFilePath)
+		{
+			NO_OP;
+		}
+	};
+
 } // namespace sinter::core::error

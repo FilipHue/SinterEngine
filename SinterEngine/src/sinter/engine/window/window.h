@@ -9,9 +9,6 @@
 namespace sinter::engine
 {
 
-	extern b8 WPI_Init();
-	extern void WPI_Shutdown();
-
 	struct EventContext;
 	class WindowSystem;
 
@@ -23,7 +20,7 @@ namespace sinter::engine
 		Window() = default;
 		virtual ~Window() = default;
 
-		virtual void Init(const WindowConfiguration& p_configuration) = 0;
+		virtual void Init(const WindowConfiguration* p_ptrConfiguration) = 0;
 		virtual void Shutdown() = 0;
 		virtual void Update() = 0;
 
@@ -59,11 +56,10 @@ namespace sinter::engine
 
 		const WindowRID& GetRID() const { return m_rid; }
 
+		b8 OnApplicationStateChange(const EventContext& p_context);
+
 	private:
 		void SetRID(const WindowRID& p_rid) { m_rid = p_rid; }
-
-	protected:
-		b8 OnApplicationStateChange(const EventContext& p_context);
 
 	protected:
 		WindowConfiguration m_configuration;
@@ -79,8 +75,10 @@ namespace sinter::engine
 		void Init();
 		void Shutdown();
 
-		Window* Create(const WindowConfiguration& p_refConfiguration);
+		Window* Create(const WindowConfiguration* p_ptrConfiguration);
 		void Destroy(WindowRID p_rid);
+
+		Window* GetWindow(WindowRID p_rid);
 
 		void SetWindowTitle(WindowRID p_rid, const char* p_title);
 		void SetWindowSize(WindowRID p_rid, u32 p_width, u32 p_height);
@@ -91,6 +89,10 @@ namespace sinter::engine
 
 	private:
 		DEFAULT_CTOR_AND_DTOR(WindowSystem);
+
+		b8 InternalInit();
+		void InternalUpdate();
+		void InternalShutdown();
 
 	private:
 		struct WindowSlot

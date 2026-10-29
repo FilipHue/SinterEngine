@@ -41,7 +41,7 @@ namespace sinter::core::io
 		SE_FUNCTION_TRACE_ENTER();
 
 		std::ifstream l_fileStream;
-		l_fileStream.open(p_refPath, std::ios::in | std::ios::binary);
+		l_fileStream.open(JoinPath(m_rootDirectory, p_refPath), std::ios::in | std::ios::binary);
 
 		if (!l_fileStream.is_open())
 		{
@@ -80,7 +80,7 @@ namespace sinter::core::io
 		SE_FUNCTION_TRACE_ENTER();
 
 		std::ofstream l_fileStream;
-		l_fileStream.open(p_refFile.GetPath(), std::ios::out | std::ios::binary);
+		l_fileStream.open(JoinPath(m_rootDirectory, p_refFile.GetPath()), std::ios::out | std::ios::binary);
 
 		if (!l_fileStream.is_open())
 		{

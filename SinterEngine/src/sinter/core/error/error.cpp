@@ -10,12 +10,13 @@ namespace sinter::core::error
 
 	using namespace core;
 
-	void ErrorSystem::Init()
+	void ErrorSystem::Init(ErrorSystemConfiguration p_configuration)
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		m_logToConsole = true;
-		m_logToFile = true;
+		m_configuration = std::move(p_configuration);
+
+		m_logFile.SetPath(m_configuration.logFilePath);
 
 		SE_CORE_DEBUG("\tErrorSystem initialized successfully!");
 
@@ -36,7 +37,7 @@ namespace sinter::core::error
 		m_errorTrace.push_back(std::move(record));
 		const ErrorRecord& l_record = m_errorTrace.back();
 
-		if (m_logToConsole)
+		if (m_configuration.logToConsole)
 		{
 			switch (record.severity)
 			{
@@ -71,7 +72,7 @@ namespace sinter::core::error
 	{
 		SE_FUNCTION_TRACE_ENTER();
 
-		if (m_logToFile == true)
+		if (m_configuration.logToFile == true)
 		{
 			std::string l_fileContent = m_logFile.GetContent();
 
